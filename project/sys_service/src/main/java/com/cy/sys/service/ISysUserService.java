@@ -23,6 +23,8 @@ public interface ISysUserService extends IService<SysUser> {
 
     ApiResp add(UserSaveParam param) throws Exception;
 
+    SysUser findByKeyWord(String keyWord) throws Exception;
+
     ApiResp delete(UserDelParam param) throws Exception;
 
     IPage<SysUserVo> listPage(IPage<SysUserVo> page, UserListPageParam param) throws Exception;

@@ -84,6 +84,19 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     /**
+     *
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public SysUser findByKeyWord(String keyWord) throws Exception {
+        QueryWrapper<SysUser> query1 = new QueryWrapper<>();
+        query1.eq("user_name", keyWord);
+        SysUser user = sysUserMapper1.selectOne(query1);
+        return user;
+    }
+
+    /**
      * 编辑用户信息
      * @param param
      * @return

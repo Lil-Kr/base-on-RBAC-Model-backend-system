@@ -19,10 +19,6 @@ import javax.validation.Valid;
 import java.util.Objects;
 
 /**
- * <p>
- *  前端控制器
- * </p>
- *
  * @author CY
  * @since 2020-11-26
  */
