@@ -1,12 +1,12 @@
 package com.cy.sys.pojo.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.extension.activerecord.Model;
-import java.util.Date;
 import com.baomidou.mybatisplus.annotation.TableId;
-import java.io.Serializable;
+import com.baomidou.mybatisplus.extension.activerecord.Model;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import java.io.Serializable;
 
 /**
  * <p>
@@ -14,7 +14,7 @@ import lombok.EqualsAndHashCode;
  * </p>
  *
  * @author CY
- * @since 2020-11-24
+ * @since 2020-11-26
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -31,7 +31,7 @@ public class SysLog extends Model<SysLog> {
     /**
      * 日志id,唯一主键
      */
-    private Long surrogateKey;
+    private Long surrogateId;
 
     /**
      * 1部门，2用户，3权限模块, 4权限， 5角色, 6角色用户关系, 7角色权限关系
@@ -76,12 +76,12 @@ public class SysLog extends Model<SysLog> {
     /**
      * 创建时间
      */
-    private Date createTime;
+    private String createTime;
 
     /**
      * 更改时间
      */
-    private Date updateTime;
+    private String updateTime;
 
 
     @Override

@@ -1,6 +1,6 @@
 package com.cy.sys.util.dept;
 
-import com.cy.sys.pojo.dto.DeptLevelDto;
+import com.cy.sys.pojo.dto.dept.DeptLevelDto;
 import com.cy.sys.pojo.entity.SysDept;
 
 import java.util.Comparator;

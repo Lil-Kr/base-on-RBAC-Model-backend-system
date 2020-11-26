@@ -5,7 +5,7 @@
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.cy.sys.pojo.entity.SysLog">
         <id column="id" property="id" />
-        <result column="surrogate_key" property="surrogateKey" />
+        <result column="surrogate_id" property="surrogateId" />
         <result column="type" property="type" />
         <result column="target_id" property="targetId" />
         <result column="old_value" property="oldValue" />
@@ -20,7 +20,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, surrogate_key, type, target_id, old_value, new_value, status, remark, operator, operate_ip, create_time, update_time
+        id, surrogate_id, type, target_id, old_value, new_value, status, remark, operator, operate_ip, create_time, update_time
     </sql>
 
 </mapper>

@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * </p>
  *
  * @author CY
- * @since 2020-11-24
+ * @since 2020-11-26
  */
 public interface ISysRoleAclService extends IService<SysRoleAcl> {
 

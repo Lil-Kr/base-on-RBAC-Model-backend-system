@@ -1,12 +1,11 @@
 package com.cy.sys.pojo.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.extension.activerecord.Model;
-import java.util.Date;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.extension.activerecord.Model;
+import lombok.*;
+
 import java.io.Serializable;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 /**
  * <p>
@@ -14,10 +13,14 @@ import lombok.EqualsAndHashCode;
  * </p>
  *
  * @author CY
- * @since 2020-11-24
+ * @since 2020-11-26
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
+@ToString
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class SysUser extends Model<SysUser> {
 
     private static final long serialVersionUID = 1L;
@@ -31,7 +34,7 @@ public class SysUser extends Model<SysUser> {
     /**
      * 唯一主键
      */
-    private Long surrogateKey;
+    private Long surrogateId;
 
     /**
      * 员工编号
@@ -69,6 +72,16 @@ public class SysUser extends Model<SysUser> {
     private Integer status;
 
     /**
+     * 操作人
+     */
+    private String operator;
+
+    /**
+     * 操作ip
+     */
+    private String operateIp;
+
+    /**
      * 备注
      */
     private String remark;
@@ -76,12 +89,12 @@ public class SysUser extends Model<SysUser> {
     /**
      * 创建时间
      */
-    private Date createTime;
+    private String createTime;
 
     /**
      * 更改时间
      */
-    private Date updateTime;
+    private String updateTime;
 
 
     @Override

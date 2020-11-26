@@ -14,7 +14,7 @@ import lombok.EqualsAndHashCode;
  * </p>
  *
  * @author CY
- * @since 2020-11-24
+ * @since 2020-11-26
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -31,7 +31,7 @@ public class SysRoleUser extends Model<SysRoleUser> {
     /**
      * 角色-用户id唯一主键
      */
-    private Long surrogateKey;
+    private Long surrogateId;
 
     /**
      * 角色id
@@ -47,6 +47,11 @@ public class SysRoleUser extends Model<SysRoleUser> {
      * 操作ip
      */
     private String operateIp;
+
+    /**
+     * 操作人
+     */
+    private String operator;
 
     /**
      * 创建时间

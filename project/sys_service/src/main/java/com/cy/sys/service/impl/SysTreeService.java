@@ -2,9 +2,9 @@ package com.cy.sys.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.cy.sys.dao.SysDeptMapper;
-import com.cy.sys.pojo.dto.DeptLevelDto;
+import com.cy.sys.pojo.dto.dept.DeptLevelDto;
 import com.cy.sys.pojo.entity.SysDept;
-import com.cy.sys.util.LevelUtil;
+import com.cy.sys.util.dept.LevelUtil;
 import com.cy.sys.util.dept.DeptUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;

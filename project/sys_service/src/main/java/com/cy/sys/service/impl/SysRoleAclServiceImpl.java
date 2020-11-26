@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
  * </p>
  *
  * @author CY
- * @since 2020-11-25
+ * @since 2020-11-26
  */
 @Service
 public class SysRoleAclServiceImpl extends ServiceImpl<SysRoleAclMapper, SysRoleAcl> implements ISysRoleAclService {

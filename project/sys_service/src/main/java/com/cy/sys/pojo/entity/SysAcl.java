@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * <p>
@@ -15,7 +14,7 @@ import java.util.Date;
  * </p>
  *
  * @author CY
- * @since 2020-11-24
+ * @since 2020-11-26
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -32,7 +31,7 @@ public class SysAcl extends Model<SysAcl> {
     /**
      * 权限id唯一主键
      */
-    private Long surrogateKey;
+    private Long surrogateId;
 
     /**
      * 权限编码
@@ -87,12 +86,12 @@ public class SysAcl extends Model<SysAcl> {
     /**
      * 创建时间
      */
-    private Date createTime;
+    private String createTime;
 
     /**
      * 更改时间
      */
-    private Date updateTime;
+    private String updateTime;
 
 
     @Override

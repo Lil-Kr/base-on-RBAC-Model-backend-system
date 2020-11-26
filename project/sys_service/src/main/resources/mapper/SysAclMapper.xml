@@ -5,7 +5,7 @@
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.cy.sys.pojo.entity.SysAcl">
         <id column="id" property="id" />
-        <result column="surrogate_key" property="surrogateKey" />
+        <result column="surrogate_id" property="surrogateId" />
         <result column="code" property="code" />
         <result column="name" property="name" />
         <result column="acl_module_id" property="aclModuleId" />
@@ -22,7 +22,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, surrogate_key, code, name, acl_module_id, url, type, status, seq, remark, operator, operate_ip, create_time, update_time
+        id, surrogate_id, code, name, acl_module_id, url, type, status, seq, remark, operator, operate_ip, create_time, update_time
     </sql>
 
 </mapper>

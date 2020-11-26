@@ -1,12 +1,12 @@
 package com.cy.sys.pojo.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.extension.activerecord.Model;
-import java.util.Date;
 import com.baomidou.mybatisplus.annotation.TableId;
-import java.io.Serializable;
+import com.baomidou.mybatisplus.extension.activerecord.Model;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import java.io.Serializable;
 
 /**
  * <p>
@@ -14,7 +14,7 @@ import lombok.EqualsAndHashCode;
  * </p>
  *
  * @author CY
- * @since 2020-11-24
+ * @since 2020-11-26
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -31,7 +31,7 @@ public class SysRoleAcl extends Model<SysRoleAcl> {
     /**
      * 角色-权限id唯一主键
      */
-    private Long surrogateKey;
+    private Long surrogateId;
 
     /**
      * 角色id
@@ -44,6 +44,11 @@ public class SysRoleAcl extends Model<SysRoleAcl> {
     private Long aclId;
 
     /**
+     * 操作人
+     */
+    private String operator;
+
+    /**
      * 操作ip
      */
     private String operateIp;
@@ -51,12 +56,12 @@ public class SysRoleAcl extends Model<SysRoleAcl> {
     /**
      * 创建时间
      */
-    private Date createTime;
+    private String createTime;
 
     /**
      * 更改时间
      */
-    private Date updateTime;
+    private String updateTime;
 
 
     @Override
