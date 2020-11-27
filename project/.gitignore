@@ -28,6 +28,7 @@
 .idea/
 /idea/
 logs/
+./generator
 *.ipr
 *.iml
 *.iws
