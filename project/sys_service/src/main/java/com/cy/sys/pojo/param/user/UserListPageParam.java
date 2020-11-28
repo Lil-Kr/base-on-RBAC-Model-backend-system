@@ -19,7 +19,7 @@ public class UserListPageParam {
      * 每页记录数
      */
     @NotNull(message = "每页记录数不能为空")
-    private Long count;
+    private Long size;
 
     /**
      * 员工姓名

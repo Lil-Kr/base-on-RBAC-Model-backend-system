@@ -1,13 +1,12 @@
 package com.cy.sys.service;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.cy.common.utils.apiUtil.ApiResp;
 import com.cy.sys.pojo.entity.SysUser;
 import com.cy.sys.pojo.param.user.UserDelParam;
 import com.cy.sys.pojo.param.user.UserListPageParam;
 import com.cy.sys.pojo.param.user.UserSaveParam;
-import com.cy.sys.pojo.vo.user.SysUserVo;
+import com.cy.sys.pojo.param.user.UserUpdatePwdParam;
 
 /**
  * <p>
@@ -27,5 +26,7 @@ public interface ISysUserService extends IService<SysUser> {
 
     ApiResp delete(UserDelParam param) throws Exception;
 
-    IPage<SysUserVo> listPage(IPage<SysUserVo> page, UserListPageParam param) throws Exception;
+    ApiResp listPage(UserListPageParam param) throws Exception;
+
+    ApiResp updatePassword(UserUpdatePwdParam param) throws Exception;
 }

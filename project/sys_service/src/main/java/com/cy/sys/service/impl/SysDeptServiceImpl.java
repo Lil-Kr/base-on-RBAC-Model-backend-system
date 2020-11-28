@@ -56,7 +56,8 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
 
         /**计算层级**/
         String level = LevelUtil.calculateLevel(getLevel(param.getParentId()),param.getParentId());
-        Long surrogateId = IdWorker.getsnowFlakeId();
+        Long surrogateId = IdWorker.getsnowFlakeId(); // surrogateId
+        String currentTime = DateUtil.getNowDateTime();// 当前时间
         SysDept dept = SysDept.builder()
                 .surrogateId(surrogateId)
                 .number("DEPT"+ surrogateId)
@@ -65,8 +66,8 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
                 .level(level)
                 .name(param.getName())
                 .remark(param.getRemark())
-                .createTime(DateUtil.getNowDateTime())
-                .updateTime(DateUtil.getNowDateTime())
+                .createTime(currentTime)
+                .updateTime(currentTime)
                 .operator("system")
                 .operateIp("127.0.0.1")
                 .build();
@@ -117,7 +118,7 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
      */
     @Transactional
     protected void updateWithChildDept(SysDept before, SysDept after) {
-        // 修改
+        // 修改当前部门信息
         sysDeptMapper1.updateById(after);
         // 更新当前部门的子部门
         String newLevelPrefix = after.getLevel();// 0.1.3

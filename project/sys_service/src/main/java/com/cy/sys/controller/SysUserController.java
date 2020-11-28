@@ -1,13 +1,11 @@
 package com.cy.sys.controller;
 
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.cy.common.utils.apiUtil.ApiResp;
 import com.cy.sys.pojo.param.user.UserDelParam;
 import com.cy.sys.pojo.param.user.UserListPageParam;
 import com.cy.sys.pojo.param.user.UserSaveParam;
-import com.cy.sys.pojo.vo.user.SysUserVo;
+import com.cy.sys.pojo.param.user.UserUpdatePwdParam;
 import com.cy.sys.service.ISysUserService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -37,12 +35,7 @@ public class SysUserController {
      */
     @PostMapping("listPage")
     public ApiResp listPage(@RequestBody @Valid UserListPageParam param) throws Exception {
-
-        IPage<SysUserVo> page = new Page<>();
-        page.setCurrent(param.getCurrent());
-        page.setSize(param.getCount());
-        IPage<SysUserVo> userVoIPage = sysUserService1.listPage(page, param);
-        return ApiResp.success(userVoIPage);
+        return sysUserService1.listPage(param);
     }
 
     /**
@@ -70,5 +63,17 @@ public class SysUserController {
     @PostMapping("delete")
     public ApiResp delete(@RequestBody @Valid UserDelParam param) throws Exception {
         return sysUserService1.delete(param);
+    }
+
+    /**
+     * 修改用户密码
+     * @param param
+     * @return
+     * @throws Exception
+     */
+    @PostMapping("updatePassword")
+    public ApiResp updatePassword(@RequestBody @Valid UserUpdatePwdParam param) throws Exception {
+        return sysUserService1.updatePassword(param);
+
     }
 }

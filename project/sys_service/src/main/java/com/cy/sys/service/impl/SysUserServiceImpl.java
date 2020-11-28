@@ -1,9 +1,11 @@
 package com.cy.sys.service.impl;
 
+import cn.hutool.crypto.SecureUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cy.common.utils.apiUtil.ApiResp;
 import com.cy.common.utils.dateUtil.DateUtil;
@@ -13,6 +15,7 @@ import com.cy.sys.pojo.entity.SysUser;
 import com.cy.sys.pojo.param.user.UserDelParam;
 import com.cy.sys.pojo.param.user.UserListPageParam;
 import com.cy.sys.pojo.param.user.UserSaveParam;
+import com.cy.sys.pojo.param.user.UserUpdatePwdParam;
 import com.cy.sys.pojo.vo.user.SysUserVo;
 import com.cy.sys.service.ISysUserService;
 import com.cy.sys.util.user.UserConst;
@@ -22,6 +25,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Objects;
 
 /**
  * @author CY
@@ -41,9 +45,43 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
      * @throws Exception
      */
     @Override
-    public IPage<SysUserVo> listPage(IPage<SysUserVo> page,UserListPageParam param) throws Exception {
+    public ApiResp listPage(UserListPageParam param) throws Exception {
+        Page<SysUserVo> page = new Page<>(param.getCurrent(), param.getSize());
+        page.setCurrent(param.getCurrent());
+        page.setSize(param.getSize());
+        IPage<SysUserVo> iPage = sysUserMapper1.selectUserPage(page, param);
+        return ApiResp.success(iPage);
+    }
 
-        return null;
+    /**
+     * 修改用户密码
+     * @param param
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public ApiResp updatePassword(UserUpdatePwdParam param) throws Exception {
+
+        // 检查旧密码是否一致
+        QueryWrapper<SysUser> query1 = new QueryWrapper<>();
+        query1.eq("surrogate_id",param.getSurrogateId());
+        query1.eq("login_account",param.getLoginAccount());
+        query1.eq("password",SecureUtil.md5(param.getOldPassword()));
+        SysUser user = sysUserMapper1.selectOne(query1);
+        if (Objects.isNull(user)) {
+            return ApiResp.error("用户不存在");
+        }
+
+        if (!SecureUtil.md5(param.getOldPassword()).equals(user.getPassword())) {
+            return ApiResp.error("用户旧密码不正确");
+        }
+
+        Integer updatePwd = sysUserMapper1.updatePasswordById(param);
+        if (updatePwd >=1) {
+            return ApiResp.success("修改用户密码成功, 请重新登录");
+        }else {
+            return ApiResp.failure("修改用户密码失败");
+        }
     }
 
     /**
@@ -55,10 +93,16 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Override
     public ApiResp add(UserSaveParam param) throws Exception {
 
+        // 检查注册登录账号是否有相同的
+        if (checkAccountExist(param.getLoginAccount(),param.getSurrogateId())) {
+            return ApiResp.error("待添加的用户账号已存在");
+        }
+
         // 检查手机号是否有相同的用户
         if (checkTelExist(param.getTelephone(),param.getSurrogateId())) {
             return ApiResp.error("待添加的用户手机号已存在");
         }
+
         // 检查Email是否有相同的用户
         if (checkEmailExist(param.getMail(),param.getSurrogateId())) {
             return ApiResp.error("待添加的用户邮箱已存在");
@@ -71,8 +115,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
         user.setSurrogateId(surrogateId);
         user.setNumber("USER"+surrogateId);
-        // TODO 密码
-        user.setPassword(UserConst.password);
+        user.setPassword(SecureUtil.md5(UserConst.password));
         String currentTime = DateUtil.getNowDateTime();
         user.setCreateTime(currentTime);
         user.setUpdateTime(currentTime);
@@ -80,18 +123,19 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         sysUserMapper1.insert(user);
 
         // TODO 邮件通知用户修改密码
+
         return ApiResp.success("添加用户成功");
     }
 
     /**
-     *
+     * 根据关键字查询
      * @return
      * @throws Exception
      */
     @Override
     public SysUser findByKeyWord(String keyWord) throws Exception {
         QueryWrapper<SysUser> query1 = new QueryWrapper<>();
-        query1.eq("user_name", keyWord);
+        query1.eq("login_account", keyWord);
         SysUser user = sysUserMapper1.selectOne(query1);
         return user;
     }
@@ -139,7 +183,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     public ApiResp delete(UserDelParam param) throws Exception {
 
         SysUser user = SysUser.builder()
-                .status(2) // 删除状态
+                .deleted(1) // 删除状态
                 .build();
         UpdateWrapper<SysUser> update1 = new UpdateWrapper<>();
         update1.eq("surrogate_id",param.getSurrogateId());
@@ -147,7 +191,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         if (update >= 1) {
             return ApiResp.success("删除用户成功");
         }else {
-            return ApiResp.error("删除用户成功", JSONObject.toJSONString(param));
+            return ApiResp.error("删除用户失败", JSONObject.toJSONString(param));
         }
     }
 
@@ -157,7 +201,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
      * @param surrogateId
      * @return
      */
-    public boolean checkTelExist(String telephone, Long surrogateId) {
+    protected boolean checkTelExist(String telephone, Long surrogateId) {
         QueryWrapper<SysUser> query1 = new QueryWrapper<>();
         query1.eq("telephone",telephone);
         query1.eq("surrogate_id",surrogateId);
@@ -185,7 +229,24 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         }else {
             return false;
         }
+    }
 
+    /**
+     * 检查用户的账号是否有相同的账号
+     * @param account 登录账号
+     * @param surrogateId 主键id
+     * @return
+     */
+    protected boolean checkAccountExist(String account, Long surrogateId) {
+        QueryWrapper<SysUser> query1 = new QueryWrapper<>();
+        query1.eq("login_account",account);
+        query1.eq("surrogate_id",surrogateId);
+        Integer count = sysUserMapper1.selectCount(query1);
+        if (count >= 1) {
+            return true;
+        }else {
+            return false;
+        }
     }
 
 }

@@ -18,9 +18,17 @@
         <result column="update_time" property="updateTime" />
     </resultMap>
 
+    <sql id="Table_Name">
+        sys_acl_module
+    </sql>
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         id, surrogate_id, name, parent_id, level, seq, status, remark, operator, operate_ip, create_time, update_time
     </sql>
 
+    <select id="selectChildDeptListByParentId" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/>
+        from <include refid="Table_Name"/>
+        where parent_id = #{parentId}
+    </select>
 </mapper>

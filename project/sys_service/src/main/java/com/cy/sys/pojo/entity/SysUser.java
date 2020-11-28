@@ -3,6 +3,7 @@ package com.cy.sys.pojo.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
 import java.io.Serializable;
@@ -21,6 +22,7 @@ import java.io.Serializable;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class SysUser extends Model<SysUser> {
 
     private static final long serialVersionUID = 1L;
@@ -40,6 +42,11 @@ public class SysUser extends Model<SysUser> {
      * 员工编号
      */
     private String number;
+
+    /**
+     * 登录账号
+     */
+    private String loginAccount;
 
     /**
      * 员工姓名
@@ -70,6 +77,11 @@ public class SysUser extends Model<SysUser> {
      * 状态, 0正常, 1冻结, 2: 删除
      */
     private Integer status;
+
+    /**
+     * 删除状态 0正常, 1删除
+     */
+    private Integer deleted;
 
     /**
      * 操作人

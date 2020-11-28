@@ -13,10 +13,15 @@ import lombok.ToString;
 @ToString
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 public final class ApiResp<T> {
-    /** 失败编码 */
+    /** 错误编码 */
     public static final Integer CODE_ERROR = -1;
+
+    /** 失败编码 */
+    public static final Integer CODE_FAILURE = 1;
+
     /** 成功编码 */
     public static final Integer CODE_SUCCESS = 0;
+
 
     /**状态码*/
     private int code;
@@ -63,12 +68,32 @@ public final class ApiResp<T> {
      * @param data
      * @return
      */
+    public static ApiResp failure(String msg, Object data) {
+        return create(CODE_FAILURE,msg,data);
+    }
+
+    /**
+     * 失败
+     * @param msg
+     * @return
+     */
+    public static ApiResp failure(String msg) {
+        return create(CODE_FAILURE,msg,null);
+    }
+
+
+    /**
+     * 错误
+     * @param msg
+     * @param data
+     * @return
+     */
     public static ApiResp error(String msg, Object data) {
         return create(CODE_ERROR,msg, data);
     }
 
     /**
-     * 失败
+     * 错误
      * @param msg
      * @return
      */
