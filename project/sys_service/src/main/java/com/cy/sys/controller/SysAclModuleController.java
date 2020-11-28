@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import java.util.Objects;
 
 /**
  * <p>
@@ -28,14 +29,29 @@ public class SysAclModuleController {
     @Resource
     private ISysAclModuleService sysAclModuleService1;
 
+    /**
+     * 保存权限模块信息
+     * @param param
+     * @return
+     * @throws Exception
+     */
     @PostMapping("save")
     public ApiResp save(@RequestBody @Valid AclModuleParam param) throws Exception{
 
-        sysAclModuleService1.add(param);
+        if (Objects.isNull(param.getSurrogateId())) {// insert
+            return sysAclModuleService1.add(param);
+        }else { // update
+            return sysAclModuleService1.edit(param);
+        }
+    }
 
-        sysAclModuleService1.edit(param);
-
-        return null;
+    /**
+     * 获得权限模块树
+     * @throws Exception
+     */
+    @PostMapping("aclModuleTree")
+    public ApiResp aclModuleTree() throws Exception{
+        return sysAclModuleService1.aclModuleTree();
     }
 
 }

@@ -16,5 +16,5 @@ import java.util.List;
  */
 public interface SysAclModuleMapper extends BaseMapper<SysAclModule> {
 
-    List<SysAclModule> selectChildDeptListByParentId(@Param("parentId") Long surrogateId);
+    List<SysAclModule> selectChildAclModuleListByParentId(@Param("parentId") Long surrogateId);
 }

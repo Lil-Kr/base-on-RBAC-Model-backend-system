@@ -6,6 +6,7 @@ import com.cy.common.utils.apiUtil.ApiResp;
 import com.cy.common.utils.dateUtil.DateUtil;
 import com.cy.common.utils.keyUtil.IdWorker;
 import com.cy.sys.dao.SysAclModuleMapper;
+import com.cy.sys.pojo.dto.aclmodule.AclModuleDto;
 import com.cy.sys.pojo.entity.SysAclModule;
 import com.cy.sys.pojo.param.aclmodule.AclModuleParam;
 import com.cy.sys.service.ISysAclModuleService;
@@ -33,6 +34,9 @@ public class SysAclModuleServiceImpl extends ServiceImpl<SysAclModuleMapper, Sys
 
     @Resource
     private SysAclModuleMapper sysAclModuleMapper1;
+
+    @Resource
+    private SysTreeService sysTreeService1;
 
     /**
      * 添加权限模块信息
@@ -110,6 +114,17 @@ public class SysAclModuleServiceImpl extends ServiceImpl<SysAclModuleMapper, Sys
     }
 
     /**
+     * 获取模块权限树
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public ApiResp aclModuleTree() throws Exception {
+        List<AclModuleDto> aclModuleDtoList = sysTreeService1.aclModuleTree();
+        return ApiResp.success(aclModuleDtoList);
+    }
+
+    /**
      *
      * 更新当前权限模块的子权限模块信息
      * @param before 旧权限模块
@@ -132,16 +147,17 @@ public class SysAclModuleServiceImpl extends ServiceImpl<SysAclModuleMapper, Sys
      * 递归变更部门树层级, 并维护子部门的level
      */
     protected void updateChildAclModuleTree(SysAclModule afterAclModule) {
-        List<SysAclModule> aclModuleList = sysAclModuleMapper1.selectChildDeptListByParentId(afterAclModule.getSurrogateId());
+        // 查询当前部门的子部门
+        List<SysAclModule> aclModuleList = sysAclModuleMapper1.selectChildAclModuleListByParentId(afterAclModule.getSurrogateId());
 
         if (CollectionUtils.isEmpty(aclModuleList)) {
             return;
         }
 
-        aclModuleList.forEach(dept -> {
-            dept.setLevel(LevelUtil.calculateLevel(afterAclModule.getLevel(),afterAclModule.getId()));
-            dept.setUpdateTime(DateUtil.getNowDateTime());
-            updateChildAclModuleTree(dept);
+        aclModuleList.forEach(aclModule -> {
+            aclModule.setLevel(LevelUtil.calculateLevel(afterAclModule.getLevel(),afterAclModule.getId()));
+            aclModule.setUpdateTime(DateUtil.getNowDateTime());
+            updateChildAclModuleTree(aclModule);
         });
         // 操作db
         this.updateBatchById(aclModuleList);

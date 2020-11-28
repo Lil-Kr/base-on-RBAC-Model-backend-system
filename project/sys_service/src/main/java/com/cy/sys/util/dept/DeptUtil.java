@@ -7,7 +7,6 @@ import java.util.Comparator;
 
 public class DeptUtil {
 
-
     /**
      * 以DeptLevelDto排序, 部门列表根据seq排序
      */

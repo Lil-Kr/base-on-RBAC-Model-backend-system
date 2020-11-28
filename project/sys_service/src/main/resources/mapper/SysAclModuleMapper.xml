@@ -26,7 +26,7 @@
         id, surrogate_id, name, parent_id, level, seq, status, remark, operator, operate_ip, create_time, update_time
     </sql>
 
-    <select id="selectChildDeptListByParentId" resultMap="BaseResultMap">
+    <select id="selectChildAclModuleListByParentId" resultMap="BaseResultMap">
         select <include refid="Base_Column_List"/>
         from <include refid="Table_Name"/>
         where parent_id = #{parentId}
