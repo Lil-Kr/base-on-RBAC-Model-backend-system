@@ -191,7 +191,7 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
         query1.eq("parent_id", param.getSurrogateId());
         Integer count = sysDeptMapper1.selectCount(query1);
         if (count >= 1) {
-            return ApiResp.error("待删除的部门还存在子部门, 不能删除");
+            return ApiResp.error("待删除的部门还存在子部门");
         }else {
             QueryWrapper<SysDept> query2 = new QueryWrapper<>();
             query2.eq("surrogate_id", param.getSurrogateId());

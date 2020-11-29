@@ -2,6 +2,7 @@ package com.cy.sys.controller;
 
 
 import com.cy.common.utils.apiUtil.ApiResp;
+import com.cy.sys.pojo.param.aclmodule.AclModuleDelParam;
 import com.cy.sys.pojo.param.aclmodule.AclModuleParam;
 import com.cy.sys.service.ISysAclModuleService;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,7 +26,6 @@ import java.util.Objects;
 @RequestMapping("/sys/aclModule")
 public class SysAclModuleController {
 
-
     @Resource
     private ISysAclModuleService sysAclModuleService1;
 
@@ -36,9 +36,9 @@ public class SysAclModuleController {
      * @throws Exception
      */
     @PostMapping("save")
-    public ApiResp save(@RequestBody @Valid AclModuleParam param) throws Exception{
+    public ApiResp save(@RequestBody @Valid AclModuleParam param) throws Exception {
 
-        if (Objects.isNull(param.getSurrogateId())) {// insert
+        if (Objects.isNull(param.getSurrogateId())) { // insert
             return sysAclModuleService1.add(param);
         }else { // update
             return sysAclModuleService1.edit(param);
@@ -50,8 +50,19 @@ public class SysAclModuleController {
      * @throws Exception
      */
     @PostMapping("aclModuleTree")
-    public ApiResp aclModuleTree() throws Exception{
+    public ApiResp aclModuleTree() throws Exception {
         return sysAclModuleService1.aclModuleTree();
+    }
+
+    /**
+     * 删除功能
+     * @param param
+     * @return
+     * @throws Exception
+     */
+    @PostMapping("delete")
+    public ApiResp delete(@RequestBody @Valid AclModuleDelParam param) throws Exception {
+        return sysAclModuleService1.delete(param);
     }
 
 }

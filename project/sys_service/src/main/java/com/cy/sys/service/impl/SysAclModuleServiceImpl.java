@@ -8,6 +8,7 @@ import com.cy.common.utils.keyUtil.IdWorker;
 import com.cy.sys.dao.SysAclModuleMapper;
 import com.cy.sys.pojo.dto.aclmodule.AclModuleDto;
 import com.cy.sys.pojo.entity.SysAclModule;
+import com.cy.sys.pojo.param.aclmodule.AclModuleDelParam;
 import com.cy.sys.pojo.param.aclmodule.AclModuleParam;
 import com.cy.sys.service.ISysAclModuleService;
 import com.cy.sys.util.dept.LevelUtil;
@@ -66,13 +67,12 @@ public class SysAclModuleServiceImpl extends ServiceImpl<SysAclModuleMapper, Sys
                 .remark(param.getRemark())
                 .createTime(currentTime)
                 .updateTime(currentTime)
-                .operator("system")
+                .operator("system") // todo 操作人 系统时间 ip
                 .operateIp("127.0.0.1")
                 .build();
         sysAclModuleMapper1.insert(aclModule);
         return ApiResp.success("添加权限模块成功");
     }
-
 
     /**
      * 修改权限模块信息
@@ -125,17 +125,16 @@ public class SysAclModuleServiceImpl extends ServiceImpl<SysAclModuleMapper, Sys
     }
 
     /**
-     *
      * 更新当前权限模块的子权限模块信息
      * @param before 旧权限模块
      * @param after 新权限模块
      */
     @Transactional
     protected void updateWithChildAclModule(SysAclModule before, SysAclModule after) {
-        // 修改当前权限模块表
+        // 修改当前权限模块
         sysAclModuleMapper1.updateById(after);
 
-        // 更新当前部门的子部门
+        // 更新当前权限模块的子权限模块
         String newLevelPrefix = after.getLevel();// 0.1.3
         String oldLevelPrefix = before.getLevel();// 0.1
         if (!newLevelPrefix.equals(oldLevelPrefix)) {// 不一致需要做子部门的更新
@@ -165,13 +164,11 @@ public class SysAclModuleServiceImpl extends ServiceImpl<SysAclModuleMapper, Sys
 
     /**
      * 获取当前权限模块所在层级的level
-     * @param surrogateId
+     * @param id
      * @return
      */
-    private String getLevel(Long surrogateId) {
-        QueryWrapper<SysAclModule> query1 = new QueryWrapper<>();
-        query1.eq("surrogate_id",surrogateId);
-        SysAclModule aclModule = sysAclModuleMapper1.selectOne(query1);
+    private String getLevel(Long id) {
+        SysAclModule aclModule = sysAclModuleMapper1.selectById(id);
         if (Objects.isNull(aclModule)) {
             return null;
         }else {
@@ -200,6 +197,28 @@ public class SysAclModuleServiceImpl extends ServiceImpl<SysAclModuleMapper, Sys
             return true;
         }else {
             return false;
+        }
+    }
+
+    /**
+     * 删除权限模块信息
+     * @param param
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public ApiResp delete(AclModuleDelParam param) throws Exception {
+        // 检查要删除的权限模块下是否还有子权限模块
+        QueryWrapper<SysAclModule> query1 = new QueryWrapper<>();
+        query1.eq("parent_id", param.getSurrogateId());
+        Integer count = sysAclModuleMapper1.selectCount(query1);
+        if (count >= 1) {
+            return ApiResp.error("待删除的权限模块还存在子权限模块");
+        }else {
+            QueryWrapper<SysAclModule> query2 = new QueryWrapper<>();
+            query2.eq("surrogate_id", param.getSurrogateId());
+            sysAclModuleMapper1.delete(query2);
+            return ApiResp.success("删除权限模块成功");
         }
     }
 }

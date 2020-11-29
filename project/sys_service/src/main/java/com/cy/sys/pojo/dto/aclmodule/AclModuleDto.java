@@ -1,8 +1,8 @@
 package com.cy.sys.pojo.dto.aclmodule;
 
 import com.cy.sys.pojo.entity.SysAclModule;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.google.common.collect.Lists;
-import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
 import org.springframework.beans.BeanUtils;
@@ -11,7 +11,7 @@ import java.util.List;
 
 /**
  * <p>
- * 
+ *  权限模块Dto
  * </p>
  *
  * @author CY
@@ -19,7 +19,7 @@ import java.util.List;
  */
 @Data
 @ToString
-@Builder
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class AclModuleDto extends SysAclModule {
 
     private List<AclModuleDto> aclModuleDtoList = Lists.newArrayList();
@@ -29,7 +29,7 @@ public class AclModuleDto extends SysAclModule {
      * @return
      */
     public static AclModuleDto adapt(SysAclModule aclModule){
-        AclModuleDto dto = AclModuleDto.builder().build();
+        AclModuleDto dto = new AclModuleDto();
         BeanUtils.copyProperties(aclModule,dto);
         return dto;
     }

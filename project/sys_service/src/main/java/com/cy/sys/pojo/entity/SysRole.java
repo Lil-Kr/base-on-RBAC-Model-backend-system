@@ -1,12 +1,11 @@
 package com.cy.sys.pojo.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.extension.activerecord.Model;
-import java.util.Date;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.extension.activerecord.Model;
+import lombok.*;
+
 import java.io.Serializable;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 /**
  * <p>
@@ -18,6 +17,10 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
+@ToString
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class SysRole extends Model<SysRole> {
 
     private static final long serialVersionUID = 1L;
@@ -25,7 +28,7 @@ public class SysRole extends Model<SysRole> {
     /**
      * 自增主键
      */
-      @TableId(value = "id", type = IdType.AUTO)
+    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
     /**
@@ -44,9 +47,9 @@ public class SysRole extends Model<SysRole> {
     private Integer type;
 
     /**
-     * 状态, 0正常，1冻结
+     * 状态, 0正常，1删除
      */
-    private Integer status;
+    private Integer deleted;
 
     /**
      * 备注
@@ -66,12 +69,12 @@ public class SysRole extends Model<SysRole> {
     /**
      * 创建时间
      */
-    private Date createTime;
+    private String createTime;
 
     /**
      * 更改时间
      */
-    private Date updateTime;
+    private String updateTime;
 
 
     @Override

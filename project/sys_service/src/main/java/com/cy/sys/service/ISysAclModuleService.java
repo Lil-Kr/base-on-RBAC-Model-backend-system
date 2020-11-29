@@ -3,6 +3,7 @@ package com.cy.sys.service;
 import com.cy.common.utils.apiUtil.ApiResp;
 import com.cy.sys.pojo.entity.SysAclModule;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.cy.sys.pojo.param.aclmodule.AclModuleDelParam;
 import com.cy.sys.pojo.param.aclmodule.AclModuleParam;
 
 /**
@@ -21,4 +22,5 @@ public interface ISysAclModuleService extends IService<SysAclModule> {
 
     ApiResp aclModuleTree() throws Exception;
 
+    ApiResp delete(AclModuleDelParam param) throws Exception;
 }

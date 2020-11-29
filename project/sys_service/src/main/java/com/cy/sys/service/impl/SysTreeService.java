@@ -5,6 +5,7 @@ import com.cy.sys.dao.SysAclModuleMapper;
 import com.cy.sys.dao.SysDeptMapper;
 import com.cy.sys.pojo.dto.aclmodule.AclModuleDto;
 import com.cy.sys.pojo.dto.dept.DeptLevelDto;
+import com.cy.sys.pojo.entity.SysAclModule;
 import com.cy.sys.pojo.entity.SysDept;
 import com.cy.sys.util.aclmodule.AclModuleUtil;
 import com.cy.sys.util.dept.DeptUtil;
@@ -106,15 +107,14 @@ public class SysTreeService {
      * @return
      */
     public List<AclModuleDto> aclModuleTree() {
-        // 查询所有部门信息
-        List<AclModuleDto> aclModuleDtoList = sysAclModuleMapper1.selectList(new QueryWrapper());
+        // 查询所有权限模块信息
+        List<SysAclModule> aclModuleList = sysAclModuleMapper1.selectList(new QueryWrapper());
 
         // 实体集合转为Dto集合
-        List<AclModuleDto> dtoList = aclModuleDtoList.stream().map(SysAclModuleDto -> SysAclModuleDto.adapt(SysAclModuleDto)).collect(Collectors.toList());
+        List<AclModuleDto> dtoList = aclModuleList.stream().map(aclModule -> AclModuleDto.adapt(aclModule)).collect(Collectors.toList());
 
         return aclModuleListToTree(dtoList);
     }
-
 
     private List<AclModuleDto> aclModuleListToTree(List<AclModuleDto> dtoList) {
 

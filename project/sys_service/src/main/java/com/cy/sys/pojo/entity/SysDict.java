@@ -9,19 +9,19 @@ import java.io.Serializable;
 
 /**
  * <p>
- * 
+ * 数据字典实体
  * </p>
  *
  * @author CY
- * @since 2020-11-26
+ * @since 2020-11-29
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @ToString
-@AllArgsConstructor
-@NoArgsConstructor
 @Builder
-public class SysAcl extends Model<SysAcl> {
+@NoArgsConstructor
+@AllArgsConstructor
+public class SysDict extends Model<SysDict> {
 
     private static final long serialVersionUID = 1L;
 
@@ -32,49 +32,29 @@ public class SysAcl extends Model<SysAcl> {
     private Long id;
 
     /**
-     * 权限id唯一主键
+     * 数据字典id唯一主键
      */
     private Long surrogateId;
 
     /**
-     * 权限编码
-     */
-    private String number;
-
-    /**
-     * 权限名
+     * 数据字典名称
      */
     private String name;
 
     /**
-     * 权限模块id
-     */
-    private Long aclModuleId;
-
-    /**
-     * 请求的url
-     */
-    private String url;
-
-    /**
-     * 1:菜单权限, 2按钮, 3其他
+     * 数据字典类型, 从0开始递增
      */
     private Integer type;
-
-    /**
-     * 状态
-     */
-    private Integer status;
-
-    /**
-     * 排序
-     */
-    private Integer seq;
 
     /**
      * 备注
      */
     private String remark;
+
+    /**
+     * 删除状态, 0正常, 1删除
+     */
+    private Integer deleted;
 
     /**
      * 操作人
@@ -94,7 +74,7 @@ public class SysAcl extends Model<SysAcl> {
     /**
      * 更改时间
      */
-    private String updateTime;
+    private String  updateTime;
 
 
     @Override

@@ -3,9 +3,8 @@ package com.cy.sys.dao;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.cy.sys.pojo.entity.SysAcl;
-import com.cy.sys.pojo.param.acl.AclPageParam;
-import com.cy.sys.pojo.vo.acl.SysAclVo;
+import com.cy.sys.pojo.entity.SysDictDetail;
+import com.cy.sys.pojo.param.dict.DictListPageParam;
 import org.apache.ibatis.annotations.Param;
 
 /**
@@ -14,9 +13,9 @@ import org.apache.ibatis.annotations.Param;
  * </p>
  *
  * @author CY
- * @since 2020-11-24
+ * @since 2020-11-29
  */
-public interface SysAclMapper extends BaseMapper<SysAcl> {
+public interface SysDictDetailMapper extends BaseMapper<SysDictDetail> {
 
-    IPage<SysAclVo> selectAclListPage(Page<SysAclVo> page, @Param("param") AclPageParam param);
+    IPage<SysDictDetail> listDetailPage(Page<SysDictDetail> page, @Param("param") DictListPageParam param);
 }
