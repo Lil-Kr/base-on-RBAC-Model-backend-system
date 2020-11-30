@@ -7,10 +7,7 @@ import com.cy.sys.pojo.param.role.RoleListPageParam;
 import com.cy.sys.pojo.param.role.RoleSaveParam;
 import com.cy.sys.service.ISysRoleService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
@@ -65,6 +62,18 @@ public class SysRoleController {
     @PostMapping("delete")
     public ApiResp delete (@RequestBody @Valid RoleDeleteParam param) throws Exception {
         return sysRoleService1.delete(param);
+    }
+
+    /**
+     * 获取权限树
+     * @param roleId
+     * @return
+     * @throws Exception
+     */
+    @PostMapping("roleTree")
+    public ApiResp roleTree(@RequestParam("roleId") @Valid Integer roleId) throws Exception {
+
+        return null;
     }
 
 }

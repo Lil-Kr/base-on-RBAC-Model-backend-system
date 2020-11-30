@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 @RestController
@@ -92,7 +93,7 @@ public class SysDictController {
      * @throws Exception
      */
     @PostMapping("deleteDetail")
-    public ApiResp deleteDetail (@RequestBody @Valid Long surrogateId) throws Exception {
+    public ApiResp deleteDetail (@Valid @NotNull(message = "surrogateId不能为空") Long surrogateId) throws Exception {
         return sysDictDetailService1.deleteDetail(surrogateId);
     }
 

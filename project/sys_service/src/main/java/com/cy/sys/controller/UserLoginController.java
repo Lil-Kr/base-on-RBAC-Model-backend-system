@@ -3,9 +3,12 @@ package com.cy.sys.controller;
 import cn.hutool.crypto.SecureUtil;
 import com.cy.common.utils.apiUtil.ApiResp;
 import com.cy.common.utils.dateUtil.DateUtil;
+import com.cy.sys.common.constant.InterceptorName;
+import com.cy.sys.common.holder.RequestHolder;
 import com.cy.sys.pojo.entity.SysUser;
 import com.cy.sys.service.ISysUserService;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -33,17 +36,17 @@ public class UserLoginController {
      * @param response
      * @throws Exception
      */
-    @RequestMapping("login")
+    @PostMapping("login")
     public ApiResp login(HttpServletRequest request, HttpServletResponse response) throws Exception {
         // 获取用户名密码
-        String username = request.getParameter("login_account");
-        String password = request.getParameter("password");
+        String loginAccount = request.getParameter(InterceptorName.login_account);
+        String password = request.getParameter(InterceptorName.password);
 
         // 查询数据库是否存在用户信息
-        SysUser user = sysUserService1.findByKeyWord(username);
+        SysUser user = sysUserService1.findByLoginAccount(loginAccount);
 
         String msg = "";
-        if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password)) {
+        if (StringUtils.isEmpty(loginAccount) || StringUtils.isEmpty(password)) {
             msg = "用户名或密码不能为空";
         }else if (Objects.isNull(user)) {
             msg = "找不到用户";
@@ -56,11 +59,14 @@ public class UserLoginController {
             return ApiResp.failure(msg);
         }
 
+        // 用户登录成功将用户信息放入请求域中
+        request.getSession().setAttribute(InterceptorName.userInfo,user);
+
         // TODO 前端做跳转 进入系统首页
-        String token = SecureUtil.md5(username + password + DateUtil.getCurrentDateTimeMilli());
+        String token = SecureUtil.md5(loginAccount + password + DateUtil.getCurrentDateTimeMilli());
         HashMap<String,Object> userLoginInfo = new HashMap();
-        userLoginInfo.put("login_account",user.getLoginAccount());
-        userLoginInfo.put("token", token);
+        userLoginInfo.put(InterceptorName.loginAccount,user.getLoginAccount());
+        userLoginInfo.put(InterceptorName.token, token);
         return ApiResp.success("登录成功",userLoginInfo);
     }
 
@@ -74,7 +80,10 @@ public class UserLoginController {
     @RequestMapping("loginOut")
     public ApiResp loginOut(HttpServletRequest request, HttpServletResponse response) throws Exception {
         // todo 用户退出登录接口
-        return ApiResp.success("");
+
+        request.getSession().setAttribute(InterceptorName.userInfo,null);
+        RequestHolder.remove();
+        return ApiResp.success("用户退出成功");
     }
 
 }

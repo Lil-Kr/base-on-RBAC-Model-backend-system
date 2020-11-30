@@ -17,6 +17,9 @@ import java.util.Map;
 
 /**
  * 全局异常处理类
+ *
+ * @author CY
+ * @since 2020-11-12
  */
 @ControllerAdvice
 @Configuration
@@ -32,7 +35,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     @ResponseBody
     public ApiResp validateException(HttpServletRequest request,
-                                     MethodArgumentNotValidException exception) throws Exception{
+                                     MethodArgumentNotValidException exception) throws Exception {
         BindingResult bindingResult = exception.getBindingResult();
         Map errorMesssageMap = Maps.newHashMap();
 
@@ -45,7 +48,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = HttpMessageNotReadableException.class)
     @ResponseBody
     public ApiResp validateException(HttpServletRequest request,
-                                     HttpMessageNotReadableException exception) throws Exception{
+                                     HttpMessageNotReadableException exception) throws Exception {
         String message = exception.getMessage();
         Map errorMesssageMap = Maps.newHashMap();
         errorMesssageMap.put("msg", message);

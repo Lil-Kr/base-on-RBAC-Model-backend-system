@@ -1,5 +1,6 @@
 package com.cy.sys.pojo.dto.aclmodule;
 
+import com.cy.sys.pojo.dto.acl.AclDto;
 import com.cy.sys.pojo.entity.SysAclModule;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.google.common.collect.Lists;
@@ -23,6 +24,8 @@ import java.util.List;
 public class AclModuleDto extends SysAclModule {
 
     private List<AclModuleDto> aclModuleDtoList = Lists.newArrayList();
+
+    private List<AclDto> aclDtoList = Lists.newArrayList();
 
     /**
      * 将权限模块数据转换为一颗树形结构

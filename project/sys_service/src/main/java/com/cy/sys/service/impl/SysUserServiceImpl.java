@@ -10,6 +10,8 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cy.common.utils.apiUtil.ApiResp;
 import com.cy.common.utils.dateUtil.DateUtil;
 import com.cy.common.utils.keyUtil.IdWorker;
+import com.cy.sys.common.constant.InterceptorName;
+import com.cy.sys.common.constant.UserInfoConst;
 import com.cy.sys.dao.SysUserMapper;
 import com.cy.sys.pojo.entity.SysUser;
 import com.cy.sys.pojo.param.user.UserDelParam;
@@ -18,7 +20,6 @@ import com.cy.sys.pojo.param.user.UserSaveParam;
 import com.cy.sys.pojo.param.user.UserUpdatePwdParam;
 import com.cy.sys.pojo.vo.user.SysUserVo;
 import com.cy.sys.service.ISysUserService;
-import com.cy.sys.util.user.UserConst;
 import com.google.common.base.Preconditions;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -95,17 +96,17 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
         // 检查注册登录账号是否有相同的
         if (checkAccountExist(param.getLoginAccount(),param.getSurrogateId())) {
-            return ApiResp.error("待添加的用户账号已存在");
+            return ApiResp.failure("待添加的用户账号已存在");
         }
 
         // 检查手机号是否有相同的用户
         if (checkTelExist(param.getTelephone(),param.getSurrogateId())) {
-            return ApiResp.error("待添加的用户手机号已存在");
+            return ApiResp.failure("待添加的用户手机号已存在");
         }
 
         // 检查Email是否有相同的用户
         if (checkEmailExist(param.getMail(),param.getSurrogateId())) {
-            return ApiResp.error("待添加的用户邮箱已存在");
+            return ApiResp.failure("待添加的用户邮箱已存在");
         }
 
         SysUser user = SysUser.builder().build();
@@ -115,7 +116,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
         user.setSurrogateId(surrogateId);
         user.setNumber("USER"+surrogateId);
-        user.setPassword(SecureUtil.md5(UserConst.password));
+        user.setPassword(SecureUtil.md5(UserInfoConst.password));
         String currentTime = DateUtil.getNowDateTime();
         user.setCreateTime(currentTime);
         user.setUpdateTime(currentTime);
@@ -133,9 +134,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
      * @throws Exception
      */
     @Override
-    public SysUser findByKeyWord(String keyWord) throws Exception {
+    public SysUser findByLoginAccount(String loginAccount) throws Exception {
         QueryWrapper<SysUser> query1 = new QueryWrapper<>();
-        query1.eq("login_account", keyWord);
+        query1.eq(InterceptorName.login_account, loginAccount);
         SysUser user = sysUserMapper1.selectOne(query1);
         return user;
     }

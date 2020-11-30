@@ -3,8 +3,7 @@ package com.cy.sys.pojo.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 import java.io.Serializable;
 
@@ -17,6 +16,10 @@ import java.io.Serializable;
  * @since 2020-11-26
  */
 @Data
+@ToString
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 public class SysRoleAcl extends Model<SysRoleAcl> {
 
@@ -25,7 +28,7 @@ public class SysRoleAcl extends Model<SysRoleAcl> {
     /**
      * 自增主键
      */
-      @TableId(value = "id", type = IdType.AUTO)
+    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
     /**

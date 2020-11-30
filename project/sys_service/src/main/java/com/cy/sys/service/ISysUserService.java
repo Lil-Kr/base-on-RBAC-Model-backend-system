@@ -22,7 +22,7 @@ public interface ISysUserService extends IService<SysUser> {
 
     ApiResp add(UserSaveParam param) throws Exception;
 
-    SysUser findByKeyWord(String keyWord) throws Exception;
+    SysUser findByLoginAccount(String LoginAccount) throws Exception;
 
     ApiResp delete(UserDelParam param) throws Exception;
 

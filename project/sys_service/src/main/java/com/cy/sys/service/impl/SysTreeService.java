@@ -164,4 +164,14 @@ public class SysTreeService {
         });
     }
 
+    /** 获取权限模块与权限点组成的树 ============================== **/
+
+    public List<AclModuleDto> roleTree(Integer roleId){
+        // 1. 拿到当前用户已经被分配过的权限点
+
+        // 2. 当前角色分配过的权限点
+
+        return new ArrayList<>();
+    }
+
 }

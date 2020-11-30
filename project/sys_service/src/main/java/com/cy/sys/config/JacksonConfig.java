@@ -13,6 +13,11 @@ import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
 import java.io.IOException;
 
+/**
+ *jackson配置
+ * @author CY
+ * @since 2020-11-12
+ */
 @Configuration
 public class JacksonConfig {
 

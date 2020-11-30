@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cy.common.utils.apiUtil.ApiResp;
 import com.cy.common.utils.dateUtil.DateUtil;
 import com.cy.common.utils.keyUtil.IdWorker;
+import com.cy.sys.common.holder.RequestHolder;
 import com.cy.sys.dao.SysDeptMapper;
 import com.cy.sys.pojo.dto.dept.DeptLevelDto;
 import com.cy.sys.pojo.entity.SysDept;
@@ -13,8 +14,8 @@ import com.cy.sys.pojo.param.dept.DeptGetChildrenParam;
 import com.cy.sys.pojo.param.dept.DeptListAllParam;
 import com.cy.sys.pojo.param.dept.DeptParam;
 import com.cy.sys.service.ISysDeptService;
-import com.cy.sys.util.dept.LevelUtil;
 import com.cy.sys.util.dept.DeptUtil;
+import com.cy.sys.util.dept.LevelUtil;
 import com.google.common.base.Preconditions;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
@@ -68,7 +69,7 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
                 .remark(param.getRemark())
                 .createTime(currentTime)
                 .updateTime(currentTime)
-                .operator("system")
+                .operator(RequestHolder.getCurrentUser().getUserName())
                 .operateIp("127.0.0.1")
                 .build();
 
@@ -83,7 +84,6 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
      */
     @Override
     public ApiResp edit(DeptParam param) throws Exception {
-
         if (checkDeptExist(param.getParentSurrogateId(),param.getName(),param.getSurrogateId())) {// 检查部门名是否重复
             return ApiResp.error("待更新的部门名不能重复");
         }
@@ -102,8 +102,8 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
                 .level(LevelUtil.calculateLevel(getLevel(param.getParentId()), param.getParentId()))
                 .remark(param.getRemark())
                 .updateTime(DateUtil.getNowDateTime())
+                .operator(RequestHolder.getCurrentUser().getUserName())
                 .operateIp("127.0.0.1")
-                .operator("system")
                 .build();
 
         // 更新子部门信息
