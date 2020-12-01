@@ -25,6 +25,9 @@ public class AclModuleDto extends SysAclModule {
 
     private List<AclModuleDto> aclModuleDtoList = Lists.newArrayList();
 
+    /**
+     * 权限点数据
+     */
     private List<AclDto> aclDtoList = Lists.newArrayList();
 
     /**

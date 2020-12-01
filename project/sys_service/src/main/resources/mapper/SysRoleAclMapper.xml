@@ -13,9 +13,34 @@
         <result column="update_time" property="updateTime" />
     </resultMap>
 
+    <sql id="Table_Name">
+        sys_role_acl
+    </sql>
+
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         id, surrogate_id, role_id, acl_id, operate_ip, create_time, update_time
     </sql>
 
+    <!--根据角色id获取权限列表id(acl_id)-->
+    <select id="selectAclIdListByRoleIdList" resultType="java.lang.Long">
+        select acl_id
+        from <include refid="Table_Name"/>
+        <where>
+            role_id in (
+                <foreach collection="userRoleIdList" index="index" item="roleId" separator=",">
+                    #{roleId}
+                </foreach>
+            )
+        </where>
+    </select>
+
+    <!--根据角色id查询权限id列表-->
+    <select id="selectAclIdListByRoleId" resultType="java.lang.Long">
+        select acl_id
+        from <include refid="Table_Name"/>
+        <where>
+            role_id = #{roleSurrogateId}
+        </where>
+    </select>
 </mapper>

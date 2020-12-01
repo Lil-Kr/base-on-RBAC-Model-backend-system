@@ -24,4 +24,6 @@ public interface ISysRoleService extends IService<SysRole> {
     ApiResp listPage(RoleListPageParam param) throws Exception;
 
     ApiResp delete(RoleDeleteParam param) throws Exception;
+
+    ApiResp listAll(RoleListPageParam param) throws Exception;
 }

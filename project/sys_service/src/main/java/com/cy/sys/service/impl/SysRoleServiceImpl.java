@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cy.common.utils.apiUtil.ApiResp;
 import com.cy.common.utils.dateUtil.DateUtil;
 import com.cy.common.utils.keyUtil.IdWorker;
+import com.cy.sys.common.holder.RequestHolder;
 import com.cy.sys.dao.SysRoleMapper;
 import com.cy.sys.pojo.entity.SysRole;
 import com.cy.sys.pojo.param.role.RoleDeleteParam;
@@ -19,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -56,7 +58,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
                 .type(param.getType())
                 .deleted(0)
                 .remark(param.getRemark())
-                .operator("system") // todo 操作人 系统时间 ip
+                .operator(RequestHolder.getCurrentUser().getLoginAccount())
                 .operateIp("127.0.0.1")
                 .createTime(currentTime)
                 .updateTime(currentTime)
@@ -87,7 +89,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
                 .surrogateId(param.getSurrogateId())
                 .name(param.getName())
                 .type(param.getType())
-                .operator("system") // todo 操作人 系统时间 ip
+                .operator(RequestHolder.getCurrentUser().getLoginAccount())
                 .operateIp("127.0.0.1")
                 .updateTime(DateUtil.getNowDateTime())
                 .build();
@@ -160,5 +162,19 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         }else {
             return ApiResp.failure("删除角色失败");
         }
+    }
+
+    /**
+     * 获取所有角色信息
+     * @param param
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public ApiResp listAll(RoleListPageParam param) throws Exception {
+        QueryWrapper<SysRole> query1 = new QueryWrapper<>();
+        query1.orderByAsc("create_time");
+        List<SysRole> sysRoleList = sysRoleMapper1.selectList(query1);
+        return ApiResp.success(sysRoleList);
     }
 }

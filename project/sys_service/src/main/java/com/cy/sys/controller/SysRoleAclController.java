@@ -1,6 +1,5 @@
 package com.cy.sys.controller;
 
-
 import com.cy.common.utils.apiUtil.ApiResp;
 import com.cy.sys.pojo.param.roleacl.RoleAclSaveParam;
 import com.cy.sys.service.ISysRoleAclService;
@@ -9,14 +8,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import javax.annotation.Resource;
 import javax.validation.Valid;
 import java.util.Objects;
 
 /**
  * <p>
- *  角色权限控制器
+ *  [角色-权限关系]控制器
  * </p>
  *
  * @author CY
@@ -30,6 +28,10 @@ public class SysRoleAclController {
     @Resource
     private ISysRoleAclService sysRoleAclService1;
 
+    /**
+     * [角色-权限]控制保存
+     * @param param
+     */
     @PostMapping("save")
     public ApiResp save (@RequestBody @Valid RoleAclSaveParam param) throws Exception {
         if (Objects.isNull(param.getSurrogateId())) {// insert
@@ -38,4 +40,5 @@ public class SysRoleAclController {
             return sysRoleAclService1.edit(param);
         }
     }
+
 }

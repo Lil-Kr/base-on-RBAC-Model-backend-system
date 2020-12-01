@@ -1,7 +1,9 @@
 package com.cy.sys.service;
 
+import com.cy.common.utils.apiUtil.ApiResp;
 import com.cy.sys.pojo.entity.SysRoleUser;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.cy.sys.pojo.param.roleuser.RoleUserParam;
 
 /**
  * <p>
@@ -13,4 +15,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface ISysRoleUserService extends IService<SysRoleUser> {
 
+    ApiResp add(RoleUserParam param) throws Exception;
+
+    ApiResp edit(RoleUserParam param) throws Exception;
 }

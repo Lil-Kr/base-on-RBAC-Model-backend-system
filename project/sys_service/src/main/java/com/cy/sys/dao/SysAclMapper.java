@@ -8,6 +8,8 @@ import com.cy.sys.pojo.param.acl.AclPageParam;
 import com.cy.sys.pojo.vo.acl.SysAclVo;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * <p>
  *  Mapper 接口
@@ -19,4 +21,6 @@ import org.apache.ibatis.annotations.Param;
 public interface SysAclMapper extends BaseMapper<SysAcl> {
 
     IPage<SysAclVo> selectAclListPage(Page<SysAclVo> page, @Param("param") AclPageParam param);
+
+    List<SysAcl> selectAclByIdList(@Param("userAclIdList") List<Long> userAclIdList);
 }

@@ -13,9 +13,20 @@
         <result column="update_time" property="updateTime" />
     </resultMap>
 
+    <!--表名-->
+    <sql id="Table_Name">
+        sys_role_user
+    </sql>
+
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         id, surrogate_id, role_id, user_id, operate_ip, create_time, update_time
     </sql>
 
+    <!--根据用户id查询用户所分配的角色id列表-->
+    <select id="selectRoleIdListByUserId" resultType="java.lang.Long">
+        select role_id
+        from <include refid="Table_Name"/>
+        where user_id = #{userSurrogateId}
+    </select>
 </mapper>

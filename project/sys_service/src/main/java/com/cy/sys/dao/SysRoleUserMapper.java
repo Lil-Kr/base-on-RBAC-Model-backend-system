@@ -2,6 +2,9 @@ package com.cy.sys.dao;
 
 import com.cy.sys.pojo.entity.SysRoleUser;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +16,5 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface SysRoleUserMapper extends BaseMapper<SysRoleUser> {
 
+    List<Long> selectRoleIdListByUserId(@Param("userSurrogateId") Long userSurrogateId);
 }

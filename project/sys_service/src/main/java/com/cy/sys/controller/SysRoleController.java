@@ -2,22 +2,23 @@ package com.cy.sys.controller;
 
 
 import com.cy.common.utils.apiUtil.ApiResp;
+import com.cy.sys.pojo.dto.aclmodule.AclModuleDto;
 import com.cy.sys.pojo.param.role.RoleDeleteParam;
 import com.cy.sys.pojo.param.role.RoleListPageParam;
 import com.cy.sys.pojo.param.role.RoleSaveParam;
 import com.cy.sys.service.ISysRoleService;
+import com.cy.sys.service.impl.SysTreeService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
-import java.util.Objects;
+import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
- * <p>
  *  角色模块
- * </p>
- *
  * @author CY
  * @since 2020-11-28
  */
@@ -28,6 +29,9 @@ public class SysRoleController {
 
     @Resource
     private ISysRoleService sysRoleService1;
+
+    @Resource
+    private SysTreeService sysTreeService1;
 
     /**
      * 分页查询角色列表
@@ -46,13 +50,20 @@ public class SysRoleController {
      * @return
      * @throws Exception
      */
-    @PostMapping("save")
-    public ApiResp save (@RequestBody @Valid RoleSaveParam param) throws Exception {
-        if (Objects.isNull(param.getSurrogateId())) {
-            return sysRoleService1.add(param);
-        }else {
-            return sysRoleService1.edit(param);
-        }
+    @PostMapping("add")
+    public ApiResp add (@RequestBody @Valid RoleSaveParam param) throws Exception {
+        return sysRoleService1.add(param);
+    }
+
+    /**
+     * 修改角色信息
+     * @param param
+     * @return
+     * @throws Exception
+     */
+    @PostMapping("edit")
+    public ApiResp edit (@RequestBody @Valid RoleSaveParam param) throws Exception {
+        return sysRoleService1.edit(param);
     }
 
     /**
@@ -65,15 +76,30 @@ public class SysRoleController {
     }
 
     /**
-     * 获取权限树
+     * 获取[角色-权限]树
      * @param roleId
      * @return
      * @throws Exception
      */
     @PostMapping("roleTree")
-    public ApiResp roleTree(@RequestParam("roleId") @Valid Integer roleId) throws Exception {
+    public ApiResp roleTree(@RequestParam("roleId") @NotNull(message = "角色id不能为空") @Valid Long roleId) throws Exception {
+        List<AclModuleDto> aclModuleDtoList = sysTreeService1.roleTree(roleId);
+        if (CollectionUtils.isNotEmpty(aclModuleDtoList)) {
+            return ApiResp.success(aclModuleDtoList);
+        }else {
+            return ApiResp.failure("该角色下没有权限点明细");
+        }
+    }
 
-        return null;
+    /**
+     * 获取所有角色信息
+     * @param param
+     * @return
+     * @throws Exception
+     */
+    @PostMapping("listAll")
+    public ApiResp listAll (@RequestBody @Valid RoleListPageParam param) throws Exception {
+        return sysRoleService1.listAll(param);
     }
 
 }

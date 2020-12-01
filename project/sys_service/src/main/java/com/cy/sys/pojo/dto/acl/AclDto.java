@@ -10,7 +10,7 @@ import org.springframework.beans.BeanUtils;
 public class AclDto extends SysAcl {
 
     /**
-     * 前端是否需要选中
+     * 前端是否默认要选中的样式
      */
     private boolean checked = false;
 
