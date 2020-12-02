@@ -19,8 +19,8 @@ public class DictSaveDetailParam {
     /**
      * 数据字典主表surrogate_id
      */
-    @NotNull(message = "数据字典主表surrogate_id不能为空")
-    private Long sysDictId;
+    @NotNull(message = "parentId不能为空")
+    private Long parentId;
 
     /**
      * 数据字典明细名称

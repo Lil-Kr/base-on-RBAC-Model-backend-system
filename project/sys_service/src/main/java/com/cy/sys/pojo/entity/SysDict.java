@@ -42,11 +42,6 @@ public class SysDict extends Model<SysDict> {
     private String name;
 
     /**
-     * 数据字典类型, 从0开始递增
-     */
-    private Integer type;
-
-    /**
      * 备注
      */
     private String remark;

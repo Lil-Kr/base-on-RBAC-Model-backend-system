@@ -14,6 +14,8 @@ import javax.validation.constraints.NotNull;
 @ToString
 public class RoleSaveParam {
 
+    public interface GroupTreeOrDel {};
+
     /**
      * 角色自增id
      */
@@ -22,6 +24,7 @@ public class RoleSaveParam {
     /**
      * 角色id唯一主键
      */
+    @NotNull(groups = {GroupTreeOrDel.class},message = "surrogateId不能为空")
     private Long surrogateId;
 
     /**
@@ -38,14 +41,6 @@ public class RoleSaveParam {
     @Min(value = 1)
     @Max(value = 3)
     private Integer type;
-
-//    /**
-//     * 删除状态, 0正常，1删除
-//     */
-//    @NotNull(message = "角色状态不能为空")
-//    @Min(value = 0)
-//    @Max(value = 1)
-//    private Integer deleted;
 
     /**
      * 备注

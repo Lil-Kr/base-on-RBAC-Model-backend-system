@@ -2,11 +2,9 @@ package com.cy.sys.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.cy.sys.common.holder.RequestHolder;
-import com.cy.sys.dao.SysAclMapper;
-import com.cy.sys.dao.SysCoreMapper;
-import com.cy.sys.dao.SysRoleAclMapper;
-import com.cy.sys.dao.SysRoleUserMapper;
+import com.cy.sys.dao.*;
 import com.cy.sys.pojo.entity.SysAcl;
+import com.cy.sys.pojo.entity.SysRole;
 import com.cy.sys.service.ISysCoreService;
 import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -25,6 +24,9 @@ public class SysCoreServiceImpl implements ISysCoreService {
 
     @Resource
     private SysAclMapper sysAclMapper1;
+
+    @Resource
+    private SysRoleMapper sysRoleMapper1;
 
     @Resource
     private SysRoleUserMapper sysRoleUserMapper1;
@@ -52,7 +54,7 @@ public class SysCoreServiceImpl implements ISysCoreService {
      */
     @Override
     public List<SysAcl> getUserAclList(Long userSurrogateId) throws Exception {
-        if (isSuperAdmin()) {// 如果当前用户是超级管理员, 返回所有的权限点列表
+        if (isSuperAdmin(userSurrogateId)) {// 如果当前用户是超级管理员, 返回所有的权限点列表
             return sysAclMapper1.selectList(new QueryWrapper<>());
         }
 
@@ -68,12 +70,12 @@ public class SysCoreServiceImpl implements ISysCoreService {
             return Lists.newArrayList();
         }
 
-        // 3. 根据限点列表id查询详细权限点列表信息
-        return sysAclMapper1.selectAclByIdList(userAclIdList);
+        // 3. 根据权限点列表id查询详细权限点列表信息
+        return sysAclMapper1.selectAclListById(userAclIdList);
     }
 
     /**
-     * 获取[角色-权限]关系列表
+     * 获取当前角色已分配的[角色-权限]关系列表
      * 当前角色已分配的权限点列表
      * @param roleSurrogateId
      * @return
@@ -88,7 +90,7 @@ public class SysCoreServiceImpl implements ISysCoreService {
         }
 
         // 再根据权限点id列表拿到具体的权限点列表信息
-        List<SysAcl> aclByIdList = sysAclMapper1.selectAclByIdList(aclIdList);
+        List<SysAcl> aclByIdList = sysAclMapper1.selectAclListById(aclIdList);
         if (CollectionUtils.isEmpty(aclByIdList)) {
             return Lists.newArrayList();
         }
@@ -101,10 +103,21 @@ public class SysCoreServiceImpl implements ISysCoreService {
      * @return
      * @throws Exception
      */
-    private Boolean isSuperAdmin() throws Exception {
+    private boolean isSuperAdmin(long userSurrogateId) throws Exception {
         // todo 超级管理员逻辑代码
-        return true;
+        // 查询当前用户锁分配的角色中是否包含是超级管理员
+        List<Long> roleIdList = sysRoleUserMapper1.selectRoleIdListByUserId(userSurrogateId);
+
+        // 根据 roleIdList 查询角色类型
+        QueryWrapper<SysRole> query1 = new QueryWrapper<>();
+        query1.in("surrogate_id",roleIdList);
+        List<SysRole> sysRoleList = sysRoleMapper1.selectList(query1);
+        // 查看是否有超级管理员的角色
+        Optional<SysRole> roleOptional = sysRoleList.stream().filter(role -> role.getType() == 1).findFirst();
+        if (roleOptional.isPresent()) {
+            return true;
+        }else {
+            return false;
+        }
     }
-
-
 }

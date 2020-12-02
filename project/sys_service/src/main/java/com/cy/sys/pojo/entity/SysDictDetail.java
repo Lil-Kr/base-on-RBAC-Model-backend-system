@@ -34,7 +34,7 @@ public class SysDictDetail extends Model<SysDictDetail> {
     /**
      * 数据字典主表id
      */
-    private Long sysDictId;
+    private Long parentId;
 
     /**
      * 数据字典明细名称

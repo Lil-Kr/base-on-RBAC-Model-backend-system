@@ -3,7 +3,6 @@ package com.cy.sys.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.cy.common.utils.apiUtil.ApiResp;
 import com.cy.sys.pojo.entity.SysRole;
-import com.cy.sys.pojo.param.role.RoleDeleteParam;
 import com.cy.sys.pojo.param.role.RoleListPageParam;
 import com.cy.sys.pojo.param.role.RoleSaveParam;
 
@@ -23,7 +22,10 @@ public interface ISysRoleService extends IService<SysRole> {
 
     ApiResp listPage(RoleListPageParam param) throws Exception;
 
-    ApiResp delete(RoleDeleteParam param) throws Exception;
+    ApiResp delete(RoleSaveParam param) throws Exception;
+
+//    ApiResp delete(Long surrogateId) throws Exception;
 
     ApiResp listAll(RoleListPageParam param) throws Exception;
+
 }

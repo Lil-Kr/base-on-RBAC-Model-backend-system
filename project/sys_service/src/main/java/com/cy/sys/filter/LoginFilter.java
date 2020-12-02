@@ -3,6 +3,7 @@ package com.cy.sys.filter;
 import com.cy.sys.common.constant.InterceptorName;
 import com.cy.sys.common.holder.RequestHolder;
 import com.cy.sys.pojo.entity.SysUser;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -17,6 +18,7 @@ import java.util.Objects;
  * @Date: 2020/11/30
  */
 @WebFilter(filterName="userLogin", urlPatterns = {"/sys/*","/admin/*"})
+@Slf4j
 public class LoginFilter implements Filter {
 
     @Override
@@ -36,8 +38,9 @@ public class LoginFilter implements Filter {
         SysUser user = (SysUser)req.getSession().getAttribute(InterceptorName.userInfo);
 
         if (Objects.isNull(user)) {// 用户未登录
-
+            log.warn("用户未登录");
         }else {// 用户登录就添加用户登录信息
+            log.warn("用户登录成功");
             RequestHolder.setCurrentUser(user);
             RequestHolder.setHttpServletRequest(req);
         }

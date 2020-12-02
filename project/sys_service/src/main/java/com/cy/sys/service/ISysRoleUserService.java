@@ -18,4 +18,6 @@ public interface ISysRoleUserService extends IService<SysRoleUser> {
     ApiResp add(RoleUserParam param) throws Exception;
 
     ApiResp edit(RoleUserParam param) throws Exception;
+
+    ApiResp changeRoleUsers(RoleUserParam param) throws Exception;
 }

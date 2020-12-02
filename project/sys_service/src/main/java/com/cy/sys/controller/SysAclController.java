@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
-import java.util.Objects;
 
 /**
  * <p>
@@ -47,15 +46,20 @@ public class SysAclController {
      * @param param
      * @return
      */
-    @PostMapping("save")
-    public ApiResp save(@RequestBody @Valid AclParam param) throws Exception {
-        if (Objects.isNull(param.getSurrogateId())) {
-            return sysAclService1.add(param);
-        }else {
-            return sysAclService1.edit(param);
-        }
+    @PostMapping("add")
+    public ApiResp add(@RequestBody @Valid AclParam param) throws Exception {
+        return sysAclService1.add(param);
     }
 
+    /**
+     * 修改权限点信息
+     * @param param
+     * @return
+     */
+    @PostMapping("edit")
+    public ApiResp edit(@RequestBody @Valid AclParam param) throws Exception {
+        return sysAclService1.edit(param);
+    }
 
 }
 

@@ -10,12 +10,10 @@ import com.cy.common.utils.keyUtil.IdWorker;
 import com.cy.sys.common.holder.RequestHolder;
 import com.cy.sys.dao.SysRoleMapper;
 import com.cy.sys.pojo.entity.SysRole;
-import com.cy.sys.pojo.param.role.RoleDeleteParam;
 import com.cy.sys.pojo.param.role.RoleListPageParam;
 import com.cy.sys.pojo.param.role.RoleSaveParam;
 import com.cy.sys.pojo.vo.role.SysRoleVo;
 import com.cy.sys.service.ISysRoleService;
-import com.google.common.base.Preconditions;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -46,8 +44,8 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
      */
     @Override
     public ApiResp add(RoleSaveParam param) throws Exception {
-        if (checkExit(param.getSurrogateId(),param.getName(),param.getType())) {
-            ApiResp.failure("角色名已存在");
+        if (checkExit(param.getSurrogateId(),param.getName())) {
+            return ApiResp.failure("角色名已存在");
         }
 
         Long surrogateId = IdWorker.getsnowFlakeId(); // surrogateId
@@ -75,14 +73,13 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
      */
     @Override
     public ApiResp edit(RoleSaveParam param) throws Exception {
-        if (checkExit(param.getSurrogateId(),param.getName(),param.getType())) {
-            ApiResp.failure("角色名已存在");
-        }
 
         QueryWrapper<SysRole> query = new QueryWrapper<>();
         query.eq("surrogate_id",param.getSurrogateId());
         SysRole before = sysRoleMapper1.selectOne(query);
-        Preconditions.checkNotNull(before, "待更新的角色信息不存在");
+        if (Objects.isNull(before)) {
+            return ApiResp.failure("待更新的角色信息不存在");
+        }
 
         SysRole after = SysRole.builder()
                 .id(before.getId())
@@ -90,6 +87,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
                 .name(param.getName())
                 .type(param.getType())
                 .operator(RequestHolder.getCurrentUser().getLoginAccount())
+                .remark(param.getRemark())
                 .operateIp("127.0.0.1")
                 .updateTime(DateUtil.getNowDateTime())
                 .build();
@@ -122,14 +120,12 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
      * 根据类型姓名检查同一类型下是否有相同名称的角色
      * @param surrogateId 父id
      * @param name 角色名称
-     * @param type 角色类型
      */
-    protected boolean checkExit(Long surrogateId,String name,Integer type) {
+    protected boolean checkExit(Long surrogateId,String name) {
         QueryWrapper<SysRole> query = new QueryWrapper<>();
         if (Objects.nonNull(surrogateId)) {
             query.eq("surrogate_id",surrogateId);
         }
-        query.eq("type",type);
         query.eq("name",name);
         Integer count = sysRoleMapper1.selectCount(query);
         if (count >= 1) {
@@ -141,14 +137,13 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
 
     /**
      * 删除角色信息
-     * @param param
      * @return
      * @throws Exception
      */
     @Override
-    public ApiResp delete(RoleDeleteParam param) throws Exception {
+    public ApiResp delete(RoleSaveParam param) throws Exception {
         QueryWrapper<SysRole> query = new QueryWrapper();
-        query.eq("surrogate_id",param);
+        query.eq("surrogate_id",param.getSurrogateId());
         SysRole role = sysRoleMapper1.selectOne(query);
         if (Objects.isNull(role)) {
             return ApiResp.failure("角色不存在, 删除失败");
@@ -156,6 +151,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
 
         //修改删除状态
         role.setDeleted(1);
+        role.setUpdateTime(DateUtil.getNowDateTime());
         int update = sysRoleMapper1.updateById(role);
         if (update >= 1) {
             return ApiResp.success("删除角色成功");
@@ -177,4 +173,5 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         List<SysRole> sysRoleList = sysRoleMapper1.selectList(query1);
         return ApiResp.success(sysRoleList);
     }
+
 }

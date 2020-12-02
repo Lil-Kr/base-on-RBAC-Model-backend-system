@@ -22,5 +22,5 @@ public interface SysAclMapper extends BaseMapper<SysAcl> {
 
     IPage<SysAclVo> selectAclListPage(Page<SysAclVo> page, @Param("param") AclPageParam param);
 
-    List<SysAcl> selectAclByIdList(@Param("userAclIdList") List<Long> userAclIdList);
+    List<SysAcl> selectAclListById(@Param("userAclIdList") List<Long> userAclIdList);
 }

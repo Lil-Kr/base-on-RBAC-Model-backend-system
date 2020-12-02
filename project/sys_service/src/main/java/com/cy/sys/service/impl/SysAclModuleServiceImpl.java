@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cy.common.utils.apiUtil.ApiResp;
 import com.cy.common.utils.dateUtil.DateUtil;
 import com.cy.common.utils.keyUtil.IdWorker;
+import com.cy.sys.common.holder.RequestHolder;
 import com.cy.sys.dao.SysAclModuleMapper;
 import com.cy.sys.pojo.dto.aclmodule.AclModuleDto;
 import com.cy.sys.pojo.entity.SysAclModule;
@@ -67,7 +68,7 @@ public class SysAclModuleServiceImpl extends ServiceImpl<SysAclModuleMapper, Sys
                 .remark(param.getRemark())
                 .createTime(currentTime)
                 .updateTime(currentTime)
-                .operator("system") // todo 操作人 系统时间 ip
+                .operator(RequestHolder.getCurrentUser().getLoginAccount())
                 .operateIp("127.0.0.1")
                 .build();
         sysAclModuleMapper1.insert(aclModule);
@@ -104,8 +105,8 @@ public class SysAclModuleServiceImpl extends ServiceImpl<SysAclModuleMapper, Sys
                 .level(LevelUtil.calculateLevel(getLevel(param.getParentId()), param.getParentId()))
                 .remark(param.getRemark())
                 .updateTime(DateUtil.getNowDateTime())
+                .operator(RequestHolder.getCurrentUser().getLoginAccount())
                 .operateIp("127.0.0.1")
-                .operator("system")
                 .build();
 
         // 更新子部门信息

@@ -15,7 +15,6 @@ import com.cy.sys.pojo.param.roleacl.RoleAclSaveParam;
  */
 public interface ISysRoleAclService extends IService<SysRoleAcl> {
 
-    ApiResp add(RoleAclSaveParam param) throws Exception;
+    ApiResp changeRoleAcls(RoleAclSaveParam param) throws Exception;
 
-    ApiResp edit(RoleAclSaveParam param) throws Exception;
 }

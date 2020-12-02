@@ -16,7 +16,6 @@ import com.cy.sys.util.aclmodule.AclModuleUtil;
 import com.cy.sys.util.dept.DeptUtil;
 import com.cy.sys.util.dept.LevelUtil;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;
@@ -185,7 +184,7 @@ public class SysTreeService {
      * @return
      * @throws Exception
      */
-    public List<AclModuleDto> roleTree(Long roleSurrogateId) throws Exception{
+    public List<AclModuleDto> roleTree(Long roleSurrogateId) throws Exception {
         // 1. 拿到当前用户已经被分配过的权限点
         List<SysAcl> userAclList = sysCoreService1.getCurrentUserAclList();
 
@@ -198,9 +197,8 @@ public class SysTreeService {
         // 4. 角色已分配权限的id集合, 去重
         Set<Long> roleAclSet = roleAclList.stream().map(roleAcl -> roleAcl.getSurrogateId()).collect(Collectors.toSet());
 
-        // 5. 获取所有的权限点, list -> set
+        // 5. 获取所有的权限点, list
         List<SysAcl> aclList = sysAclMapper1.selectList(new QueryWrapper<>());
-        Set<SysAcl> aclAllSet = Sets.newHashSet(aclList);
 
         // 将权限点列表为当前用户标记出访问权限
         List<AclDto> aclDtoList = Lists.newArrayList();
@@ -209,12 +207,12 @@ public class SysTreeService {
                 .forEach(aclDto -> {
                     // 打标已分配的权限点
                     if (userAclIdSet.contains(aclDto.getSurrogateId())) {
-                        aclDto.setHasAcl(true);
+                        aclDto.setChecked(true);
                     }
 
                     // 打标用户分配权限时的操作权限(是否有权限操作)
                     if (roleAclSet.contains(aclDto.getSurrogateId())) {
-                        aclDto.setChecked(true);
+                        aclDto.setHasAcl(true);
                     }
                     aclDtoList.add(aclDto);
                 });

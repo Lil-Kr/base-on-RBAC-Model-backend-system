@@ -49,7 +49,7 @@ public class SysDictDetailServiceImpl extends ServiceImpl<SysDictDetailMapper, S
         Long surrogateId = IdWorker.getsnowFlakeId(); // surrogateId
         SysDictDetail dictDetail = SysDictDetail.builder()
                 .surrogateId(surrogateId)
-                .sysDictId(param.getSysDictId())
+                .parentId(param.getParentId())
                 .name(param.getName())
                 .remark(param.getRemark())
                 .build();
@@ -75,7 +75,7 @@ public class SysDictDetailServiceImpl extends ServiceImpl<SysDictDetailMapper, S
 
         SysDictDetail after = SysDictDetail.builder()
                 .surrogateId(param.getSurrogateId())
-                .sysDictId(param.getSysDictId())
+                .parentId(param.getParentId())
                 .name(param.getName())
                 .remark(param.getRemark())
                 .build();

@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cy.common.utils.apiUtil.ApiResp;
 import com.cy.common.utils.dateUtil.DateUtil;
 import com.cy.common.utils.keyUtil.IdWorker;
+import com.cy.sys.common.holder.RequestHolder;
 import com.cy.sys.dao.SysDictMapper;
 import com.cy.sys.pojo.entity.SysDict;
 import com.cy.sys.pojo.param.dict.DictSaveParam;
@@ -47,11 +48,10 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
 
         SysDict dict = SysDict.builder()
                 .surrogateId(surrogateId)
-                .type(param.getType())
                 .name(param.getName())
                 .remark(param.getRemark())
                 .deleted(0)
-                .operator("system") // todo 操作人 系统时间 ip
+                .operator(RequestHolder.getCurrentUser().getLoginAccount())
                 .operateIp("127.0.0.1")
                 .createTime(currentTime)
                 .updateTime(currentTime)
@@ -80,7 +80,7 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
 
         SysDict after = SysDict.builder()
                 .surrogateId(before.getSurrogateId())
-                .type(param.getType())
+                .operator(RequestHolder.getCurrentUser().getLoginAccount())
                 .name(param.getName())
                 .remark(param.getRemark())
                 .deleted(0)
@@ -121,7 +121,6 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
         if (Objects.nonNull(surrogateId)) {
             query.eq("surrogate_id",surrogateId);
         }
-        query.eq("type",type);
         query.eq("name",name);
         Integer count = sysDictMapper1.selectCount(query);
         if (count >= 1) {

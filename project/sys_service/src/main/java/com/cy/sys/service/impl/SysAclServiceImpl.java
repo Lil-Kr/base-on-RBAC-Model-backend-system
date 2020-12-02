@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cy.common.utils.apiUtil.ApiResp;
 import com.cy.common.utils.dateUtil.DateUtil;
 import com.cy.common.utils.keyUtil.IdWorker;
+import com.cy.sys.common.holder.RequestHolder;
 import com.cy.sys.dao.SysAclMapper;
 import com.cy.sys.pojo.entity.SysAcl;
 import com.cy.sys.pojo.param.acl.AclPageParam;
@@ -57,7 +58,7 @@ public class SysAclServiceImpl extends ServiceImpl<SysAclMapper, SysAcl> impleme
                 .status(param.getStatus())
                 .seq(param.getSeq())
                 .remark(param.getRemark())
-                .operator("System")
+                .operator(RequestHolder.getCurrentUser().getLoginAccount())
                 .operateIp("127.0.0.1")
                 .createTime(currentTime)
                 .updateTime(currentTime)
@@ -82,18 +83,21 @@ public class SysAclServiceImpl extends ServiceImpl<SysAclMapper, SysAcl> impleme
         QueryWrapper<SysAcl> query1 = new QueryWrapper();
         query1.eq("surrogate_id",param.getSurrogateId());
         SysAcl before = sysAclMapper1.selectOne(query1);
-        Preconditions.checkNotNull(before, "带更新的权限点不存在");
+        Preconditions.checkNotNull(before, "待更新的权限点不存在");
 
         SysAcl after = SysAcl.builder()
                 .id(before.getId())
                 .surrogateId(before.getSurrogateId())
                 .number(before.getNumber())
+                .name(param.getName())
                 .aclModuleId(param.getAclModuleId())
                 .url(param.getUrl())
                 .type(param.getType())
                 .status(param.getStatus())
                 .seq(param.getSeq())
                 .remark(param.getRemark())
+                .operator(RequestHolder.getCurrentUser().getLoginAccount())
+                .operateIp("127.0.0.1")
                 .updateTime(DateUtil.getNowDateTime())
                 .build();
 
@@ -130,7 +134,6 @@ public class SysAclServiceImpl extends ServiceImpl<SysAclMapper, SysAcl> impleme
         }
         query.eq("acl_module_id", aclModuleId);
         query.eq("name", name);
-
         Integer count = sysAclMapper1.selectCount(query);
 
         if (count >= 1) {

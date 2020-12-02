@@ -5,6 +5,8 @@ import lombok.ToString;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 @Data
@@ -48,8 +50,11 @@ public class AclParam {
     private Integer type;
 
     /**
-     * 状态
+     * 状态 0 正常 ,1 冻结
      */
+    @NotNull(message = "status状态不能为空")
+    @Max(value = 1)
+    @Min(value = 0)
     private Integer status;
 
     /**
@@ -61,6 +66,6 @@ public class AclParam {
     /**
      * 备注
      */
-    @Length(min = 0,max = 100,message = "权限点备注长度为5~100个字符之间")
+    @Length(min = 1,max = 100,message = "权限点备注长度为1~100个字符之间")
     private String remark;
 }

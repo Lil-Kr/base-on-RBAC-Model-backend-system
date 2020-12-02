@@ -4,13 +4,13 @@ import com.cy.common.utils.apiUtil.ApiResp;
 import com.cy.sys.pojo.param.roleacl.RoleAclSaveParam;
 import com.cy.sys.service.ISysRoleAclService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import javax.annotation.Resource;
-import javax.validation.Valid;
-import java.util.Objects;
 
 /**
  * <p>
@@ -29,16 +29,13 @@ public class SysRoleAclController {
     private ISysRoleAclService sysRoleAclService1;
 
     /**
-     * [角色-权限]控制保存
+     * 修改角色对应的权限点
      * @param param
+     * @return
+     * @throws Exception
      */
-    @PostMapping("save")
-    public ApiResp save (@RequestBody @Valid RoleAclSaveParam param) throws Exception {
-        if (Objects.isNull(param.getSurrogateId())) {// insert
-            return sysRoleAclService1.add(param);
-        }else {// update
-            return sysRoleAclService1.edit(param);
-        }
+    @PostMapping("changeRoleAcls")
+    public ApiResp changeRoleAcls(@RequestBody @Validated({RoleAclSaveParam.GroupChangeAcls.class}) RoleAclSaveParam param) throws Exception {
+        return sysRoleAclService1.changeRoleAcls(param);
     }
-
 }

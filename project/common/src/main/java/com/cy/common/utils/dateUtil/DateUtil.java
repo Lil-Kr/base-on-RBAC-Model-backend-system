@@ -12,10 +12,6 @@ public class DateUtil {
 
     private static final String YYYYMMDDD = "YYYYMMDDD";
 
-    private static LocalDateTime localDateTime1 = LocalDateTime.now();
-
-    private static LocalDate localDate1 = LocalDate.now();
-
     private static DateTimeFormatter formatterForTime = DateTimeFormatter.ofPattern(YYYY_MM_DD_HH_MM_SS);
 
     private static DateTimeFormatter formatterForDate = DateTimeFormatter.ofPattern(YYYY_MM_DD);
@@ -47,13 +43,7 @@ public class DateUtil {
      * @return 当前时间戳
      */
     public static String getNowDateTime(){
-        formatterForTime = DateTimeFormatter.ofPattern("YYYY-MM-dd HH:mm:ss");
-        return formatterForTime.format(localDateTime1);
-    }
-
-    public static void main(String[] args) {
-        String nowDateTime = DateUtil.getNowDateTime();
-        System.out.println(nowDateTime);
+        return formatterForTime.format(LocalDateTime.now());
     }
 
     /**
