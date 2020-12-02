@@ -145,7 +145,7 @@ public class SysTreeService {
                 .sorted(Comparator.comparing(AclModuleDto::getSeq)) // 按照seq字段升序排序
                 .collect(Collectors.groupingBy(dto -> dto.getLevel()));
 
-        // 从顶层开始递归生成部门树
+        // 从顶层开始递归生成权限模块树
         transformAclModuleTree(rootList,LevelUtil.ROOT,levelAclModuleMap);
         return rootList;
     }
@@ -185,34 +185,36 @@ public class SysTreeService {
      * @throws Exception
      */
     public List<AclModuleDto> roleTree(Long roleSurrogateId) throws Exception {
-        // 1. 拿到当前用户已经被分配过的权限点
+        // 1. 拿到当前用户所属角色中已分配的的权限点(此处为用户所能支配的权限上限)
         List<SysAcl> userAclList = sysCoreService1.getCurrentUserAclList();
 
-        // 2. 当前角色分配过的权限点
-        List<SysAcl> roleAclList = sysCoreService1.getRoleAclList(roleSurrogateId);
-
-        // 3. 存放用户已分配的权限id(AclId), 去重
+        // 2. 获取用户所属角色的已分配的权限id(AclId), [去重, 比较时性能优于list]
         Set<Long> userAclIdSet = userAclList.stream().map(acl -> acl.getSurrogateId()).collect(Collectors.toSet());
 
-        // 4. 角色已分配权限的id集合, 去重
-        Set<Long> roleAclSet = roleAclList.stream().map(roleAcl -> roleAcl.getSurrogateId()).collect(Collectors.toSet());
+        // 3. 获取当前角色分配过的权限点(此处为当前)
+        List<SysAcl> roleAclList = sysCoreService1.getRoleAclList(roleSurrogateId);
 
-        // 5. 获取所有的权限点, list
-        List<SysAcl> aclList = sysAclMapper1.selectList(new QueryWrapper<>());
+        // 4. 当前角色已分配的权限id集合, [此处转为set是为了比较时的性能考虑, 比较时性能优于list]
+        Set<Long> roleAclIdSet = roleAclList.stream().map(roleAcl -> roleAcl.getSurrogateId()).collect(Collectors.toSet());
+
+        // 5. 获取所有的权限点列表, list
+        QueryWrapper<SysAcl> query2 = new QueryWrapper<>();
+        query2.eq("status",0);// 获取正常的权限点
+        List<SysAcl> aclAllList = sysAclMapper1.selectList(query2);
 
         // 将权限点列表为当前用户标记出访问权限
         List<AclDto> aclDtoList = Lists.newArrayList();
-        aclList.stream()
+        aclAllList.stream()
                 .map(acl -> AclDto.adapt(acl))
                 .forEach(aclDto -> {
-                    // 打标已分配的权限点
+                    // 用户已分配的权限点, 可操作
                     if (userAclIdSet.contains(aclDto.getSurrogateId())) {
-                        aclDto.setChecked(true);
+                        aclDto.setHasAcl(true);
                     }
 
-                    // 打标用户分配权限时的操作权限(是否有权限操作)
-                    if (roleAclSet.contains(aclDto.getSurrogateId())) {
-                        aclDto.setHasAcl(true);
+                    // 是否在前端显示为"选中", 选中状态取决于角色所分配的权限点, 分配过的权限点就为选中状态
+                    if (roleAclIdSet.contains(aclDto.getSurrogateId())) {
+                        aclDto.setChecked(true);
                     }
                     aclDtoList.add(aclDto);
                 });
@@ -235,7 +237,7 @@ public class SysTreeService {
 
         // 根据[权限模块id]分组
         Map<Long, List<AclDto>> moduleIdAclMap = aclDtoList.stream()
-                .filter(aclDto -> aclDto.getStatus() == 0)
+                .filter(aclDto -> aclDto.getStatus() == 0) // 获取正常的权限点
                 .collect(Collectors.groupingBy(aclDto -> aclDto.getAclModuleId()));
 
         // 绑定权限点到权限模块下

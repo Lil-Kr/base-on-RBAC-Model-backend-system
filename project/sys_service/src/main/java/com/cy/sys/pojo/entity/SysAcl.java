@@ -16,7 +16,7 @@ import java.io.Serializable;
  * @since 2020-11-26
  */
 @Data
-@EqualsAndHashCode(callSuper = false,of = {"surrogateId"})
+@EqualsAndHashCode(of = {"surrogateId"})
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor

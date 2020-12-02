@@ -48,7 +48,7 @@ public class SysCoreServiceImpl implements ISysCoreService {
 
     /**
      * 获取[用户-权限]列表
-     * @param userSurrogateId
+     * @param userSurrogateId 用户id
      * @return
      * @throws Exception
      */
@@ -64,14 +64,14 @@ public class SysCoreServiceImpl implements ISysCoreService {
             return Lists.newArrayList();
         }
 
-        // 2. 根据角色id获取对应权限点列表id(acl_id)
+        // 2. 根据角色id获取对应用户已经分配的权限点列表id(acl_id)
         List<Long> userAclIdList = sysRoleAclMapper1.selectAclIdListByRoleIdList(userRoleIdList);
         if (CollectionUtils.isEmpty(userAclIdList)) {
             return Lists.newArrayList();
         }
 
         // 3. 根据权限点列表id查询详细权限点列表信息
-        return sysAclMapper1.selectAclListById(userAclIdList);
+        return sysAclMapper1.selectAclListByAclIdList(userAclIdList);
     }
 
     /**
@@ -90,7 +90,7 @@ public class SysCoreServiceImpl implements ISysCoreService {
         }
 
         // 再根据权限点id列表拿到具体的权限点列表信息
-        List<SysAcl> aclByIdList = sysAclMapper1.selectAclListById(aclIdList);
+        List<SysAcl> aclByIdList = sysAclMapper1.selectAclListByAclIdList(aclIdList);
         if (CollectionUtils.isEmpty(aclByIdList)) {
             return Lists.newArrayList();
         }

@@ -7,8 +7,10 @@ import com.cy.common.utils.dateUtil.DateUtil;
 import com.cy.common.utils.keyUtil.IdWorker;
 import com.cy.sys.common.holder.RequestHolder;
 import com.cy.sys.dao.SysRoleAclMapper;
+import com.cy.sys.pojo.entity.SysAcl;
 import com.cy.sys.pojo.entity.SysRoleAcl;
 import com.cy.sys.pojo.param.roleacl.RoleAclSaveParam;
+import com.cy.sys.service.ISysCoreService;
 import com.cy.sys.service.ISysRoleAclService;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
@@ -36,6 +38,9 @@ public class SysRoleAclServiceImpl extends ServiceImpl<SysRoleAclMapper, SysRole
 
     @Resource
     private SysRoleAclMapper sysRoleAclMapper1;
+
+    @Resource
+    private ISysCoreService sysCoreService1;
 
     /**
      * 检查同一个角色下不能分配同一个权限
@@ -68,9 +73,18 @@ public class SysRoleAclServiceImpl extends ServiceImpl<SysRoleAclMapper, SysRole
                 .stream()
                 .map(aclId -> Long.valueOf(aclId))
                 .collect(Collectors.toList());
-        // 查询角色分配过的权限点id
-        List<Long> originAclIdList = sysRoleAclMapper1.selectAclIdListByRoleId(param.getRoleId());
 
+        // 判断将要修改的权限点是否超过了当前用户所拥有的最大权限范围
+        List<SysAcl> currentUserAclList = sysCoreService1.getCurrentUserAclList();
+        Set<Long> currentAclIdSet = currentUserAclList.stream().map(acl -> acl.getSurrogateId()).collect(Collectors.toSet());
+        Set<Long> aclIdsSet = Sets.newHashSet(aclIdList);
+        aclIdsSet.removeAll(currentAclIdSet);
+        if (CollectionUtils.isNotEmpty(aclIdsSet)) {
+            return ApiResp.failure("待更新的权限点超过已有权限");
+        }
+
+        // 查询角色已经分配的权限点id
+        List<Long> originAclIdList = sysRoleAclMapper1.selectAclIdListByRoleId(param.getRoleId());
         if (aclIdList.size() == originAclIdList.size()) {
             Set<Long> originAclIdSet = Sets.newHashSet(originAclIdList);
             Set<Long> aclIdSet = Sets.newHashSet(aclIdList);

@@ -2,7 +2,6 @@ package com.cy.sys.controller;
 
 
 import com.cy.common.utils.apiUtil.ApiResp;
-import com.cy.common.utils.keyUtil.IdWorker;
 import com.cy.sys.pojo.dto.aclmodule.AclModuleDto;
 import com.cy.sys.pojo.param.role.RoleListPageParam;
 import com.cy.sys.pojo.param.role.RoleSaveParam;
@@ -29,11 +28,6 @@ import java.util.List;
 @RequestMapping("/sys/role")
 @Slf4j
 public class SysRoleController {
-
-
-    public static void main(String[] args) {
-        System.out.println(IdWorker.getsnowFlakeId());
-    }
 
     @Resource
     private ISysRoleService sysRoleService1;
