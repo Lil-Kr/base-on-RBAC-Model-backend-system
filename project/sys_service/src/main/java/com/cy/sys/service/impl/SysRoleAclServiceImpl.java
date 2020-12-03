@@ -13,7 +13,6 @@ import com.cy.sys.pojo.param.roleacl.RoleAclSaveParam;
 import com.cy.sys.service.ISysCoreService;
 import com.cy.sys.service.ISysRoleAclService;
 import com.google.common.base.Splitter;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
@@ -114,21 +113,20 @@ public class SysRoleAclServiceImpl extends ServiceImpl<SysRoleAclMapper, SysRole
         wrapper.eq("role_id",roleId);
         sysRoleAclMapper1.delete(wrapper);
 
-        List<SysRoleAcl> roleAclList = Lists.newArrayList();
         String currentTime = DateUtil.getNowDateTime();
-        aclIdList.forEach(aclId -> {
-            SysRoleAcl roleAcl = SysRoleAcl.builder()
-                    .surrogateId(IdWorker.getsnowFlakeId())
-                    .roleId(roleId)
-                    .aclId(aclId)
-                    .operator(RequestHolder.getCurrentUser().getLoginAccount())
-                    .operateIp("127.0.0.1")
-                    .createTime(currentTime)
-                    .updateTime(currentTime)
-                    .build();
-            roleAclList.add(roleAcl);
-        });
-
+        List<SysRoleAcl> roleAclList = aclIdList.stream()
+                .map(aclId -> {
+                    return SysRoleAcl.builder()
+                            .surrogateId(IdWorker.getsnowFlakeId())
+                            .roleId(roleId)
+                            .aclId(aclId)
+                            .operator(RequestHolder.getCurrentUser().getLoginAccount())
+                            .operateIp("127.0.0.1")
+                            .createTime(currentTime)
+                            .updateTime(currentTime)
+                            .build();
+                })
+                .collect(Collectors.toList());
         // 批量新增
         this.saveBatch(roleAclList);
     }

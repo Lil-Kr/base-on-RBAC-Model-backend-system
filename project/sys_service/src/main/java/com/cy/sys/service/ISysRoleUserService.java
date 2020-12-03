@@ -15,9 +15,13 @@ import com.cy.sys.pojo.param.roleuser.RoleUserParam;
  */
 public interface ISysRoleUserService extends IService<SysRoleUser> {
 
-    ApiResp add(RoleUserParam param) throws Exception;
-
-    ApiResp edit(RoleUserParam param) throws Exception;
+//    ApiResp add(RoleUserParam param) throws Exception;
+//
+//    ApiResp edit(RoleUserParam param) throws Exception;
 
     ApiResp changeRoleUsers(RoleUserParam param) throws Exception;
+
+//    ApiResp roleUserPageList(RoleUserParam param) throws Exception;
+
+    ApiResp roleUserList(RoleUserParam param) throws Exception;
 }

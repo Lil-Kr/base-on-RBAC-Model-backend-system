@@ -209,17 +209,22 @@ public class SysAclModuleServiceImpl extends ServiceImpl<SysAclModuleMapper, Sys
      */
     @Override
     public ApiResp delete(AclModuleDelParam param) throws Exception {
+        QueryWrapper<SysAclModule> query = new QueryWrapper<>();
+        query.eq("surrogate_id",param.getSurrogateId());
+        SysAclModule aclModule = sysAclModuleMapper1.selectOne(query);
+        if (Objects.isNull(aclModule)) {
+            return ApiResp.failure("待删除的权限模块不存在");
+        }
+
         // 检查要删除的权限模块下是否还有子权限模块
         QueryWrapper<SysAclModule> query1 = new QueryWrapper<>();
         query1.eq("parent_id", param.getSurrogateId());
         Integer count = sysAclModuleMapper1.selectCount(query1);
         if (count >= 1) {
-            return ApiResp.error("待删除的权限模块还存在子权限模块");
-        }else {
-            QueryWrapper<SysAclModule> query2 = new QueryWrapper<>();
-            query2.eq("surrogate_id", param.getSurrogateId());
-            sysAclModuleMapper1.delete(query2);
-            return ApiResp.success("删除权限模块成功");
+            return ApiResp.failure("待删除的权限模块还存在子权限模块, 无法删除");
         }
+
+        sysAclModuleMapper1.deleteById(aclModule.getId());
+        return ApiResp.success("删除权限模块成功");
     }
 }

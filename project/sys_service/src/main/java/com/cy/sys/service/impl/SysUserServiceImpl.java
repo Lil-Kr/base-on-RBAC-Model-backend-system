@@ -21,11 +21,14 @@ import com.cy.sys.pojo.param.user.UserUpdatePwdParam;
 import com.cy.sys.pojo.vo.user.SysUserVo;
 import com.cy.sys.service.ISysUserService;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -52,6 +55,21 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         page.setSize(param.getSize());
         IPage<SysUserVo> iPage = sysUserMapper1.selectUserPage(page, param);
         return ApiResp.success(iPage);
+    }
+
+    /**
+     * 获取所有用户信息
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public ApiResp listAll() throws Exception {
+        List<SysUser> users = sysUserMapper1.selectList(new QueryWrapper<>());
+
+        if (CollectionUtils.isEmpty(users)) {
+            return ApiResp.success(Lists.newArrayList());
+        }
+        return ApiResp.success(users);
     }
 
     /**
@@ -249,5 +267,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             return false;
         }
     }
+
+
 
 }

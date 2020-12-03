@@ -6,6 +6,8 @@ import com.cy.sys.pojo.entity.SysRole;
 import com.cy.sys.pojo.param.role.RoleListPageParam;
 import com.cy.sys.pojo.param.role.RoleSaveParam;
 
+import java.util.List;
+
 /**
  * <p>
  *  服务类
@@ -28,4 +30,5 @@ public interface ISysRoleService extends IService<SysRole> {
 
     ApiResp listAll(RoleListPageParam param) throws Exception;
 
+    List<SysRole> getRoleListByUserId(long userId) throws Exception;
 }

@@ -17,6 +17,8 @@ public class RoleUserParam {
 
     public interface GroupChangeRoleUsers {};
 
+    public interface GroupRoleUserPageList {};
+
     /**
      * 自增主键
      */
@@ -27,17 +29,29 @@ public class RoleUserParam {
      */
     private Long surrogateId;
 
+//    /**
+//     * 当前页码数
+//     */
+//    @NotNull(groups = {GroupRoleUserPageList.class},message = "当前页码数不能为空")
+//    private Long current;
+//
+//    /**
+//     * 每页记录数
+//     */
+//    @NotNull(groups = {GroupRoleUserPageList.class},message = "每页记录数不能为空")
+//    private Long size;
+
     /**
      * 角色id
      */
-    @NotNull(groups = {Default.class},message = "角色roleId不为空")
+    @NotNull(groups = {Default.class,GroupRoleUserPageList.class,GroupChangeRoleUsers.class},message = "角色roleId不为空")
     private Long roleId;
 
     /**
      * 多个角色id, 用逗号分隔
      */
-    @NotNull(groups = {GroupChangeRoleUsers.class},message = "角色roleIds不为空")
-    private String roleIds;
+    @NotNull(groups = {GroupChangeRoleUsers.class},message = "角色userId不为空")
+    private String userIds;
 
     /**
      * 用户id

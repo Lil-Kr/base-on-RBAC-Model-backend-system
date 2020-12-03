@@ -6,6 +6,7 @@ import com.cy.sys.pojo.param.acl.AclPageParam;
 import com.cy.sys.pojo.param.acl.AclParam;
 import com.cy.sys.service.ISysAclService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -59,6 +60,14 @@ public class SysAclController {
     @PostMapping("edit")
     public ApiResp edit(@RequestBody @Valid AclParam param) throws Exception {
         return sysAclService1.edit(param);
+    }
+
+    /**
+     * 获取权限点分配的用户角色
+     */
+    @PostMapping("acls")
+    public ApiResp acls(@RequestBody @Validated({AclParam.GroupAcls.class}) AclParam param) throws Exception {
+        return sysAclService1.acls(param);
     }
 
 }

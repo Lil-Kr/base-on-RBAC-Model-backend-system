@@ -21,4 +21,6 @@ public interface ISysAclService extends IService<SysAcl> {
     ApiResp edit(AclParam param) throws Exception;
 
     ApiResp listPage(AclPageParam param) throws Exception;
+
+    ApiResp acls(AclParam param) throws Exception;
 }

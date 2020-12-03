@@ -269,4 +269,18 @@ public class SysTreeService {
         });
     }
 
+    /** ============ 用户权限树 **/
+    public List<AclModuleDto> userAclTree(long userId) throws Exception{
+        List<SysAcl> userAclList = sysCoreService1.getUserAclList(userId);
+        List<AclDto> aclDtoList = userAclList.stream()
+                .map(acl -> {
+                    AclDto dto = AclDto.adapt(acl);
+                    dto.setHasAcl(true);
+                    dto.setChecked(true);
+                    return dto;
+                })
+                .collect(Collectors.toList());
+        return aclListToTree(aclDtoList);
+    }
+
 }

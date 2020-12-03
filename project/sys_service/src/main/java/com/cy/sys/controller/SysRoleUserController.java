@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import javax.validation.Valid;
-import javax.validation.groups.Default;
 
 /**
  * <p>
@@ -28,25 +26,36 @@ public class SysRoleUserController {
     @Resource
     private ISysRoleUserService sysRoleUserService1;
 
+//    /**
+//     * 新增 [角色-用户]关系信息
+//     * @return
+//     * @throws Exception
+//     */
+//    @PostMapping("add")
+//    public ApiResp add(@RequestBody @Validated({Default.class}) RoleUserParam param) throws Exception {
+//        return sysRoleUserService1.add(param);
+//    }
+//
+//    /**
+//     * 修改 [角色-用户]关系信息
+//     * @return
+//     * @throws Exception
+//     */
+//    @PostMapping("edit")
+//    public ApiResp edit(@RequestBody @Valid RoleUserParam param) throws Exception {
+//
+//        return sysRoleUserService1.edit(param);
+//    }
+
     /**
-     * 新增 [角色-用户]关系信息
+     * 获取角色分配的用户列表
+     * @param param
      * @return
      * @throws Exception
      */
-    @PostMapping("add")
-    public ApiResp add(@RequestBody @Validated({Default.class}) RoleUserParam param) throws Exception {
-        return sysRoleUserService1.add(param);
-    }
-
-    /**
-     * 修改 [角色-用户]关系信息
-     * @return
-     * @throws Exception
-     */
-    @PostMapping("edit")
-    public ApiResp edit(@RequestBody @Valid RoleUserParam param) throws Exception {
-
-        return sysRoleUserService1.edit(param);
+    @PostMapping("roleUserList")
+    public ApiResp roleUserList(@RequestBody @Validated({RoleUserParam.GroupRoleUserPageList.class}) RoleUserParam param) throws Exception {
+        return sysRoleUserService1.roleUserList(param);
     }
 
     /**

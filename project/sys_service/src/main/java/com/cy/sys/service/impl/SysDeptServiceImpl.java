@@ -186,18 +186,23 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
      */
     @Override
     public ApiResp delete(DeptDeleteParam param) throws Exception {
+        QueryWrapper<SysDept> query = new QueryWrapper<>();
+        query.eq("surrogate_id", param.getSurrogateId());
+        SysDept dept = sysDeptMapper1.selectOne(query);
+        if (Objects.isNull(dept)) {
+            return ApiResp.failure("待删除的部门不存在");
+        }
+
         // 检查要删除的部门下面是否还有子部门
         QueryWrapper<SysDept> query1 = new QueryWrapper<>();
         query1.eq("parent_id", param.getSurrogateId());
         Integer count = sysDeptMapper1.selectCount(query1);
         if (count >= 1) {
-            return ApiResp.error("待删除的部门还存在子部门");
-        }else {
-            QueryWrapper<SysDept> query2 = new QueryWrapper<>();
-            query2.eq("surrogate_id", param.getSurrogateId());
-            sysDeptMapper1.delete(query2);
-            return ApiResp.success("删除部门成功");
+            return ApiResp.failure("待删除的部门下存在子部门, 不能删除");
         }
+
+        sysDeptMapper1.deleteById(dept.getId());
+        return ApiResp.success("删除部门成功");
     }
 
     /**

@@ -5,7 +5,11 @@ import com.cy.common.utils.apiUtil.ApiResp;
 import com.cy.sys.pojo.dto.aclmodule.AclModuleDto;
 import com.cy.sys.pojo.param.role.RoleListPageParam;
 import com.cy.sys.pojo.param.role.RoleSaveParam;
+import com.cy.sys.pojo.param.roleacl.RoleAclSaveParam;
+import com.cy.sys.pojo.param.roleuser.RoleUserParam;
+import com.cy.sys.service.ISysRoleAclService;
 import com.cy.sys.service.ISysRoleService;
+import com.cy.sys.service.ISysRoleUserService;
 import com.cy.sys.service.impl.SysTreeService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
@@ -20,7 +24,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 /**
- *  角色模块
+ * 角色管理模块
  * @author CY
  * @since 2020-11-28
  */
@@ -34,6 +38,12 @@ public class SysRoleController {
 
     @Resource
     private SysTreeService sysTreeService1;
+
+    @Resource
+    private ISysRoleUserService sysRoleUserService1;
+
+    @Resource
+    private ISysRoleAclService sysRoleAclService1;
 
     /**
      * 分页查询角色列表
@@ -102,6 +112,40 @@ public class SysRoleController {
     @PostMapping("listAll")
     public ApiResp listAll (@RequestBody @Valid RoleListPageParam param) throws Exception {
         return sysRoleService1.listAll(param);
+    }
+
+    /**
+     * 修改角色对应的权限点
+     * 维护[角色-权限]关系接口
+     * @param param
+     * @return
+     * @throws Exception
+     */
+    @PostMapping("changeRoleAcls")
+    public ApiResp changeRoleAcls(@RequestBody @Validated({RoleAclSaveParam.GroupChangeAcls.class}) RoleAclSaveParam param) throws Exception {
+        return sysRoleAclService1.changeRoleAcls(param);
+    }
+
+    /**
+     * 获取[角色-用户]列表
+     * @param param
+     * @return
+     * @throws Exception
+     */
+    @PostMapping("roleUserList")
+    public ApiResp roleUserList(@RequestBody @Validated({RoleUserParam.GroupRoleUserPageList.class}) RoleUserParam param) throws Exception {
+        return sysRoleUserService1.roleUserList(param);
+    }
+
+    /**
+     * 维护[角色-用户]关系接口
+     * @param param
+     * @return
+     * @throws Exception
+     */
+    @PostMapping("changeRoleUsers")
+    public ApiResp changeRoleUsers(@RequestBody @Validated({RoleUserParam.GroupChangeRoleUsers.class}) RoleUserParam param) throws Exception {
+        return sysRoleUserService1.changeRoleUsers(param);
     }
 
 }

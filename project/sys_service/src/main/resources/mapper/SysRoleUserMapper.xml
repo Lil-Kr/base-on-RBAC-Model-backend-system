@@ -29,4 +29,12 @@
         from <include refid="Table_Name"/>
         where user_id = #{userSurrogateId}
     </select>
+
+    <!--根据角色id查询被分配的用户id-->
+    <select id="selectUserIdListByRoleId" resultType="java.lang.Long">
+        select
+            user_id
+        from <include refid="Table_Name"/>
+        where role_id = #{roleId}
+    </select>
 </mapper>

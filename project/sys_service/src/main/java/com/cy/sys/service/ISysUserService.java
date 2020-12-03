@@ -28,5 +28,9 @@ public interface ISysUserService extends IService<SysUser> {
 
     ApiResp listPage(UserListPageParam param) throws Exception;
 
+    ApiResp listAll() throws Exception;
+
     ApiResp updatePassword(UserUpdatePwdParam param) throws Exception;
+
+
 }

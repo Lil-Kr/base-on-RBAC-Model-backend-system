@@ -9,12 +9,15 @@ import com.cy.common.utils.dateUtil.DateUtil;
 import com.cy.common.utils.keyUtil.IdWorker;
 import com.cy.sys.common.holder.RequestHolder;
 import com.cy.sys.dao.SysRoleMapper;
+import com.cy.sys.dao.SysRoleUserMapper;
 import com.cy.sys.pojo.entity.SysRole;
 import com.cy.sys.pojo.param.role.RoleListPageParam;
 import com.cy.sys.pojo.param.role.RoleSaveParam;
 import com.cy.sys.pojo.vo.role.SysRoleVo;
 import com.cy.sys.service.ISysRoleService;
+import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -35,6 +38,9 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
 
     @Resource
     private SysRoleMapper sysRoleMapper1;
+
+    @Resource
+    private SysRoleUserMapper sysRoleUserMapper;
 
     /**
      * 添加角色信息
@@ -174,4 +180,19 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         return ApiResp.success(sysRoleList);
     }
 
+    /**
+     * 根据userId获取角色信息
+     * @return
+     */
+    @Override
+    public List<SysRole> getRoleListByUserId (long userId) {
+        List<Long> roleIdList = sysRoleUserMapper.selectRoleIdListByUserId(userId);
+        if (CollectionUtils.isEmpty(roleIdList)) {
+            return Lists.newArrayList();
+        }
+        QueryWrapper<SysRole> query = new QueryWrapper<>();
+        query.in("surrogate_id",roleIdList);
+        List<SysRole> sysRoleList = sysRoleMapper1.selectList(query);
+        return sysRoleList;
+    }
 }

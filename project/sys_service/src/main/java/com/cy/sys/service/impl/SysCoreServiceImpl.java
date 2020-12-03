@@ -54,7 +54,8 @@ public class SysCoreServiceImpl implements ISysCoreService {
      */
     @Override
     public List<SysAcl> getUserAclList(Long userSurrogateId) throws Exception {
-        if (isSuperAdmin(userSurrogateId)) {// 如果当前用户是超级管理员, 返回所有的权限点列表
+        // 如果当前用户是超级管理员, 返回所有的权限点列表
+        if (isSuperAdmin(userSurrogateId)) {
             return sysAclMapper1.selectList(new QueryWrapper<>());
         }
 
@@ -71,7 +72,8 @@ public class SysCoreServiceImpl implements ISysCoreService {
         }
 
         // 3. 根据权限点列表id查询详细权限点列表信息
-        return sysAclMapper1.selectAclListByAclIdList(userAclIdList);
+        List<SysAcl> aclList = sysAclMapper1.selectAclListByAclIdList(userAclIdList);
+        return aclList;
     }
 
     /**

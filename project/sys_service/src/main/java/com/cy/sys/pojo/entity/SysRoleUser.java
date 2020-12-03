@@ -16,7 +16,6 @@ import java.io.Serializable;
  * @since 2020-11-26
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
 @ToString
 @Builder
 @NoArgsConstructor

@@ -13,6 +13,7 @@ import javax.validation.constraints.NotNull;
 @ToString
 public class AclParam {
 
+    public interface GroupAcls {}
 
     /**
      * 自增主键
@@ -22,6 +23,7 @@ public class AclParam {
     /**
      * 权限id唯一主键
      */
+    @NotNull(groups = {GroupAcls.class},message = "surrogateId不能为空")
     private Long surrogateId;
 
     /**
