@@ -46,7 +46,7 @@ public class SysAclModuleServiceImpl extends ServiceImpl<SysAclModuleMapper, Sys
      * @return
      */
     @Override
-    public ApiResp add(AclModuleParam param) throws Exception {
+    public ApiResp addAclModule(AclModuleParam param) throws Exception {
         /**
          * 检查权限模块名是否相同
          */
@@ -81,7 +81,7 @@ public class SysAclModuleServiceImpl extends ServiceImpl<SysAclModuleMapper, Sys
      * @return
      */
     @Override
-    public ApiResp edit(AclModuleParam param) throws Exception {
+    public ApiResp editAclModule(AclModuleParam param) throws Exception {
         /**
          * 检查权限模块名是否相同
          */

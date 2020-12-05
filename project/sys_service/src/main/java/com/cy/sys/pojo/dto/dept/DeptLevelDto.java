@@ -1,6 +1,7 @@
 package com.cy.sys.pojo.dto.dept;
 
 import com.cy.sys.pojo.entity.SysDept;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.google.common.collect.Lists;
 import lombok.Data;
 import lombok.ToString;
@@ -10,7 +11,10 @@ import java.util.List;
 
 @Data
 @ToString
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class DeptLevelDto extends SysDept {
+
+    private Long parentSurrogateId;
 
     private List<DeptLevelDto> deptList = Lists.newArrayList();
 

@@ -17,6 +17,11 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
+/**
+ * 数据字典管理
+ * @author CY
+ * @since 2020-11-28
+ */
 @RestController
 @RequestMapping("/sys/dict")
 @Slf4j
@@ -41,6 +46,16 @@ public class SysDictController {
         }else {
             return sysDictService1.edit(param);
         }
+    }
+
+    @PostMapping("add")
+    public ApiResp add (@RequestBody @Valid DictSaveParam param) throws Exception {
+            return sysDictService1.add(param);
+    }
+
+    @PostMapping("edit")
+    public ApiResp edit (@RequestBody @Valid DictSaveParam param) throws Exception {
+        return sysDictService1.edit(param);
     }
 
     /**

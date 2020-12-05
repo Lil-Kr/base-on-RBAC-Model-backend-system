@@ -15,9 +15,7 @@ import javax.validation.Valid;
 import java.util.Objects;
 
 /**
- * <p>
- *  前端控制器
- * </p>
+ * 权限模块管理
  * @author CY
  * @since 2020-11-28
  */
@@ -36,12 +34,33 @@ public class SysAclModuleController {
      */
     @PostMapping("save")
     public ApiResp save(@RequestBody @Valid AclModuleParam param) throws Exception {
-
         if (Objects.isNull(param.getSurrogateId())) { // insert
-            return sysAclModuleService1.add(param);
+            return sysAclModuleService1.addAclModule(param);
         }else { // update
-            return sysAclModuleService1.edit(param);
+            return sysAclModuleService1.editAclModule(param);
         }
+    }
+
+    /**
+     * 新增权限模块
+     * @param param
+     * @return
+     * @throws Exception
+     */
+    @PostMapping("addAclModule")
+    public ApiResp addAclModule(@RequestBody @Valid AclModuleParam param) throws Exception {
+        return sysAclModuleService1.addAclModule(param);
+    }
+
+    /**
+     * 更新权限模块
+     * @param param
+     * @return
+     * @throws Exception
+     */
+    @PostMapping("editAclModule")
+    public ApiResp editAclModule(@RequestBody @Valid AclModuleParam param) throws Exception {
+        return sysAclModuleService1.editAclModule(param);
     }
 
     /**
@@ -54,7 +73,7 @@ public class SysAclModuleController {
     }
 
     /**
-     * 删除功能
+     * 删除权限模块功能
      * @param param
      * @return
      * @throws Exception

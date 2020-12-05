@@ -16,9 +16,9 @@ import com.cy.sys.pojo.param.aclmodule.AclModuleParam;
  */
 public interface ISysAclModuleService extends IService<SysAclModule> {
 
-    ApiResp add(AclModuleParam param) throws Exception;
+    ApiResp addAclModule(AclModuleParam param) throws Exception;
 
-    ApiResp edit(AclModuleParam param) throws Exception;
+    ApiResp editAclModule(AclModuleParam param) throws Exception;
 
     ApiResp aclModuleTree() throws Exception;
 

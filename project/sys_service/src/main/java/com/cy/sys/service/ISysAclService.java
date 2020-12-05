@@ -16,9 +16,9 @@ import com.cy.sys.pojo.param.acl.AclParam;
  */
 public interface ISysAclService extends IService<SysAcl> {
 
-    ApiResp add(AclParam param) throws Exception;
+    ApiResp addAcl(AclParam param) throws Exception;
 
-    ApiResp edit(AclParam param) throws Exception;
+    ApiResp editAcl(AclParam param) throws Exception;
 
     ApiResp listPage(AclPageParam param) throws Exception;
 

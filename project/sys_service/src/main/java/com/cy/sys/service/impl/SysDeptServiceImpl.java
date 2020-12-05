@@ -1,6 +1,8 @@
 package com.cy.sys.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cy.common.utils.apiUtil.ApiResp;
 import com.cy.common.utils.dateUtil.DateUtil;
@@ -16,7 +18,6 @@ import com.cy.sys.pojo.param.dept.DeptParam;
 import com.cy.sys.service.ISysDeptService;
 import com.cy.sys.util.dept.DeptUtil;
 import com.cy.sys.util.dept.LevelUtil;
-import com.google.common.base.Preconditions;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;
@@ -52,7 +53,7 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
          * 检查部门名是否相同
          */
         if (checkDeptExist(param.getParentSurrogateId(),param.getName(),param.getSurrogateId())) {// 检查
-            return ApiResp.error("待添加的部门名不能重复");
+            return ApiResp.failure("待添加的部门名不能重复");
         }
 
         /**计算层级**/
@@ -69,7 +70,7 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
                 .remark(param.getRemark())
                 .createTime(currentTime)
                 .updateTime(currentTime)
-                .operator(RequestHolder.getCurrentUser().getUserName())
+                .operator(RequestHolder.getCurrentUser().getLoginAccount())
                 .operateIp("127.0.0.1")
                 .build();
 
@@ -85,12 +86,14 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
     @Override
     public ApiResp edit(DeptParam param) throws Exception {
         if (checkDeptExist(param.getParentSurrogateId(),param.getName(),param.getSurrogateId())) {// 检查部门名是否重复
-            return ApiResp.error("待更新的部门名不能重复");
+            return ApiResp.failure("待更新的部门名不能重复");
         }
 
         // 检查待更新的部门是否存在
         SysDept before = sysDeptMapper1.selectById(param.getId());
-        Preconditions.checkNotNull(before, "待更新的部门不存在");
+        if (Objects.isNull(before)) {
+            return ApiResp.failure("待更新的部门不存在");
+        }
 
         // 更新当前部门
         SysDept after = SysDept.builder()
@@ -102,7 +105,7 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
                 .level(LevelUtil.calculateLevel(getLevel(param.getParentId()), param.getParentId()))
                 .remark(param.getRemark())
                 .updateTime(DateUtil.getNowDateTime())
-                .operator(RequestHolder.getCurrentUser().getUserName())
+                .operator(RequestHolder.getCurrentUser().getLoginAccount())
                 .operateIp("127.0.0.1")
                 .build();
 
@@ -212,10 +215,36 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
     @Override
     public ApiResp deptListAll(DeptListAllParam param) throws Exception {
         QueryWrapper<SysDept> query1 = new QueryWrapper<>();
-        query1.like("name",param.getName());
+        if (Objects.nonNull(param.getNumber())) {
+            query1.like("number",param.getNumber());
+        }
+        if (Objects.nonNull(param.getName())) {
+            query1.like("name",param.getName());
+        }
+        query1.orderByAsc("surrogate_id");// 排序
         List<SysDept> deptList = sysDeptMapper1.selectList(query1);
         Collections.sort(deptList,DeptUtil.deptComparator);
         return ApiResp.success(deptList);
+    }
+
+    /**
+     * 分页查询部门信息
+     * @param param
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public ApiResp deptListPage(DeptListAllParam param) throws Exception {
+        Page<SysDept> page = new Page<>(param.getCurrent(), param.getSize());
+        QueryWrapper<SysDept> queryPage = new QueryWrapper<>();
+        if (Objects.nonNull(param.getNumber())) {
+            queryPage.like("number",param.getNumber());
+        }
+        if (Objects.nonNull(param.getName())) {
+            queryPage.like("name",param.getName());
+        }
+        IPage<SysDept> iPage = sysDeptMapper1.selectPage(page, queryPage);
+        return ApiResp.success(iPage);
     }
 
     /**

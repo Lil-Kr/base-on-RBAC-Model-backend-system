@@ -54,7 +54,6 @@ public class SysAclServiceImpl extends ServiceImpl<SysAclMapper, SysAcl> impleme
     @Resource
     private SysUserMapper sysUserMapper1;
 
-
     /**
      * 添加权限点
      * @param param
@@ -62,7 +61,7 @@ public class SysAclServiceImpl extends ServiceImpl<SysAclMapper, SysAcl> impleme
      * @throws Exception
      */
     @Override
-    public ApiResp add(AclParam param) throws Exception {
+    public ApiResp addAcl(AclParam param) throws Exception {
         if (checkAclExist(param.getAclModuleId(),param.getName(),param.getSurrogateId())) {
             return ApiResp.failure("待添加的权限点名不能重复");
         }
@@ -95,7 +94,7 @@ public class SysAclServiceImpl extends ServiceImpl<SysAclMapper, SysAcl> impleme
      * @throws Exception
      */
     @Override
-    public ApiResp edit(AclParam param) throws Exception {
+    public ApiResp editAcl(AclParam param) throws Exception {
         if (checkAclExist(param.getAclModuleId(),param.getName(),param.getSurrogateId())) {
             return ApiResp.failure("待添加的权限点名不能重复");
         }

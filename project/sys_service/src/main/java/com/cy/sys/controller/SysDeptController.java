@@ -8,6 +8,7 @@ import com.cy.sys.pojo.param.dept.DeptListAllParam;
 import com.cy.sys.pojo.param.dept.DeptParam;
 import com.cy.sys.service.ISysDeptService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +19,7 @@ import javax.validation.Valid;
 import java.util.Objects;
 
 /**
+ * 组织架构模块
  * @author CY
  * @since 2020-11-24
  */
@@ -46,12 +48,44 @@ public class SysDeptController {
     }
 
     /**
-     * 获取部门树
+     * 新增部门信息
+     * @param param
+     * @return
+     * @throws Exception
+     */
+    @PostMapping("add")
+    public ApiResp add(@RequestBody @Valid DeptParam param) throws Exception {
+        return sysDeptService1.add(param);
+    }
+
+    /**
+     * 修改部门信息
+     * 支持修改部门层级
+     * @param param
+     * @return
+     * @throws Exception
+     */
+    @PostMapping("edit")
+    public ApiResp edit(@RequestBody @Validated({DeptParam.GroupEdit.class}) DeptParam param) throws Exception {
+        return sysDeptService1.edit(param);
+    }
+
+    /**
+     * 获取组织结构树结构
      * @return
      */
     @PostMapping("deptTreeList")
     public ApiResp deptTreeList() throws Exception {
         return sysDeptService1.deptTree();
+    }
+
+    /**
+     * 获取组织结构树结构
+     * @return
+     */
+    @PostMapping("deptListPage")
+    public ApiResp deptListPage(@RequestBody @Validated({DeptListAllParam.GroupPage.class}) DeptListAllParam param) throws Exception {
+        return sysDeptService1.deptListPage(param);
     }
 
     /**
@@ -84,12 +118,6 @@ public class SysDeptController {
     @PostMapping("delete")
     public ApiResp delete(@RequestBody @Valid DeptDeleteParam param) throws Exception {
         return sysDeptService1.delete(param);
-    }
-
-
-    @PostMapping("test")
-    public ApiResp test(@RequestBody @Valid DeptParam param) throws Exception {
-        return sysDeptService1.add(param);
     }
 
 }

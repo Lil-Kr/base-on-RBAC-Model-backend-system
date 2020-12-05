@@ -1,6 +1,5 @@
 package com.cy.sys.controller;
 
-
 import com.cy.common.utils.apiUtil.ApiResp;
 import com.cy.sys.pojo.dto.aclmodule.AclModuleDto;
 import com.cy.sys.pojo.entity.SysRole;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import javax.annotation.Resource;
 import javax.validation.Valid;
 import java.util.List;
@@ -26,6 +24,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
+ * 用户管理模块
  * @author CY
  * @since 2020-11-26
  */

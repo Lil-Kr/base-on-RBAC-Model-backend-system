@@ -29,6 +29,11 @@ public class AclControlFilter implements Filter{
 
     private static Set<String> exclusionUrlSet = Sets.newConcurrentHashSet();
 
+    /**
+     * 初始化用户所有的权限点信息
+     * @param filterConfig
+     * @throws ServletException
+     */
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         String exclusionUrls = filterConfig.getInitParameter("exclusionUrls");

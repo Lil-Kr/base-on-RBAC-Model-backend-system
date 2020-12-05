@@ -29,4 +29,6 @@ public interface ISysDeptService extends IService<SysDept> {
     ApiResp delete(DeptDeleteParam dto) throws Exception;
 
     ApiResp deptListAll(DeptListAllParam param) throws Exception;
+
+    ApiResp deptListPage(DeptListAllParam param) throws Exception;
 }

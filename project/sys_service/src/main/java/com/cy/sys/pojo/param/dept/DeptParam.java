@@ -19,14 +19,18 @@ import javax.validation.constraints.NotNull;
 @ToString
 public class DeptParam {
 
+    public interface GroupEdit {}
+
     /**
      * 自增主键
      */
+    @NotNull(groups = {GroupEdit.class},message = "部门id不能为空")
     private Long id;
 
     /**
      * 部门唯一主键
      */
+    @NotNull(groups = {GroupEdit.class},message = "部门surrogateId不能为空")
     private Long surrogateId;
 
     /**

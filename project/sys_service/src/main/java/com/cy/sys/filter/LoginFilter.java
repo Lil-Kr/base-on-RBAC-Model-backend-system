@@ -6,7 +6,6 @@ import com.cy.sys.pojo.entity.SysUser;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.*;
-import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -17,7 +16,7 @@ import java.util.Objects;
  * @Author: CY
  * @Date: 2020/11/30
  */
-@WebFilter(filterName="userLogin", urlPatterns = {"/sys/*","/admin/*"})
+//@WebFilter(filterName="userLogin", urlPatterns = {"/sys/*","/admin/*"})
 @Slf4j
 public class LoginFilter implements Filter {
 

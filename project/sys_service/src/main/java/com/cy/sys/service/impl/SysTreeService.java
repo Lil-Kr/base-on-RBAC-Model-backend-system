@@ -168,6 +168,7 @@ public class SysTreeService {
 
             // 排序
             Collections.sort(dtoNextTempList, AclModuleUtil.aclModuleLevelDtoComparator);
+
             // 设置下一层部门
             aclModuleDto.setAclModuleDtoList(dtoNextTempList);
 
@@ -177,7 +178,6 @@ public class SysTreeService {
     }
 
     /** 获取权限模块与权限点组成的树 ============================== **/
-
     /**
      * 获取角色对应的权限树
      * @param roleSurrogateId 角色id
