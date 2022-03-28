@@ -23,6 +23,7 @@
 .settings/
 .project
 .classpatch
+target
 
 #Intellij idea
 .idea/
@@ -30,6 +31,7 @@
 *.ipr
 *.iml
 *.iws
+target
 
 # temp file
 *.log
