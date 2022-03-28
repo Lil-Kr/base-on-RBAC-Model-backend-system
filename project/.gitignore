@@ -23,11 +23,15 @@
 .settings/
 .project
 .classpatch
+target
+target/*
 
 #Intellij idea
 .idea/
 /idea/
 logs/
+target
+target/*
 ./generator
 *.ipr
 *.iml
