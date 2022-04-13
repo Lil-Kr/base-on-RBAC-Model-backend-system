@@ -17,7 +17,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, surrogate_id, name, type, remark, deleted, operator, operate_ip, create_time, update_time
+        id, surrogate_id, `name`, remark, operator, operate_ip, create_time, update_time, deleted
     </sql>
 
 </mapper>
