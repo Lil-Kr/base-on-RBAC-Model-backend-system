@@ -12,7 +12,7 @@ import com.cy.sys.pojo.entity.SysAclModule;
 import com.cy.sys.pojo.param.aclmodule.AclModuleDelParam;
 import com.cy.sys.pojo.param.aclmodule.AclModuleParam;
 import com.cy.sys.service.ISysAclModuleService;
-import com.cy.sys.util.dept.LevelUtil;
+import com.cy.sys.util.org.LevelUtil;
 import com.google.common.base.Preconditions;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;

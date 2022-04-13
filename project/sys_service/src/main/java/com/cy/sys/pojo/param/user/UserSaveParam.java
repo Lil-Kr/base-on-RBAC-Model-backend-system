@@ -53,7 +53,7 @@ public class UserSaveParam {
      * 用户所在部门id
      */
     @NotNull(groups = {Default.class},message = "用户所在部门不能为空")
-    private Long deptId;
+    private Long orgId;
 
     /**
      * 状态, 0正常, 1冻结

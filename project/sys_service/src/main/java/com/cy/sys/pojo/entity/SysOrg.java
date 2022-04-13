@@ -3,7 +3,6 @@ package com.cy.sys.pojo.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
 import java.io.Serializable;
@@ -14,16 +13,15 @@ import java.io.Serializable;
  * </p>
  *
  * @author CY
- * @since 2020-11-26
+ * @since 2020-11-24
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@ToString
 @Builder
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonInclude(JsonInclude.Include.NON_NULL)
-public class SysUser extends Model<SysUser> {
+public class SysOrg extends Model<SysOrg> {
 
     private static final long serialVersionUID = 1L;
 
@@ -39,49 +37,34 @@ public class SysUser extends Model<SysUser> {
     private Long surrogateId;
 
     /**
-     * 员工编号
+     * 部门编号
      */
     private String number;
 
     /**
-     * 登录账号
+     * 部门名称
      */
-    private String loginAccount;
+    private String name;
 
     /**
-     * 员工姓名
+     * 父id
      */
-    private String userName;
+    private Long parentId;
 
     /**
-     * 员工电话
+     * 部门层级, 0. / 0.1, 0.2
      */
-    private String telephone;
+    private String level;
 
     /**
-     * 邮箱
+     * 排序, 部门咋当前层级目录下的顺序
      */
-    private String mail;
+    private Integer seq;
 
     /**
-     * 密码
+     * 备注
      */
-    private String password;
-
-    /**
-     * 用户所在部门id
-     */
-    private Long orgId;
-
-    /**
-     * 状态, 0正常, 1冻结, 2: 删除
-     */
-    private Integer status;
-
-    /**
-     * 删除状态 0正常, 1删除
-     */
-    private Integer deleted;
+    private String remark;
 
     /**
      * 操作人
@@ -92,11 +75,6 @@ public class SysUser extends Model<SysUser> {
      * 操作ip
      */
     private String operateIp;
-
-    /**
-     * 备注
-     */
-    private String remark;
 
     /**
      * 创建时间

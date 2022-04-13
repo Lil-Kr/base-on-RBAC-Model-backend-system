@@ -12,7 +12,7 @@
         <result column="telephone" property="telephone" />
         <result column="mail" property="mail" />
         <result column="password" property="password" />
-        <result column="dept_id" property="deptId" />
+        <result column="org_id" property="orgId" />
         <result column="status" property="status" />
         <result column="deleted" property="deleted" />
         <result column="remark" property="remark" />
@@ -30,7 +30,7 @@
         <result column="telephone" property="telephone" />
         <result column="mail" property="mail" />
         <result column="password" property="password" />
-        <result column="dept_id" property="deptId" />
+        <result column="org_id" property="orgId" />
         <result column="status" property="status" />
         <result column="deleted" property="deleted" />
         <result column="remark" property="remark" />
@@ -44,7 +44,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, surrogate_id, number, login_account, password, user_name, telephone, mail, password, dept_id, status, deleted, remark, create_time, update_time
+        id, surrogate_id, number, login_account, password, user_name, telephone, mail, password, org_id, status, deleted, remark, create_time, update_time
     </sql>
 
     <update id="updatePasswordById">

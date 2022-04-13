@@ -201,7 +201,7 @@ CREATE TABLE `sys_user`  (
   `user_name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '员工姓名',
   `telephone` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT '' COMMENT '员工电话',
   `mail` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '邮箱',
-  `dept_id` bigint(22) DEFAULT NULL COMMENT '用户所在部门id',
+  `org_id` bigint(22) DEFAULT NULL COMMENT '用户所在部门id',
   `status` int(1) DEFAULT NULL COMMENT '状态, 0正常, 1冻结',
   `deleted` int(1) DEFAULT NULL COMMENT '0正常, 1删除',
   `operator` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '操作人',
