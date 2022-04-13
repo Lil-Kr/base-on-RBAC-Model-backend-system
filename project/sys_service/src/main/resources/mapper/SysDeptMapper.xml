@@ -35,7 +35,7 @@
     </resultMap>
 
     <sql id="Table_Name">
-        sys_dept
+        sys_org
     </sql>
 
     <!-- 通用查询结果列 -->

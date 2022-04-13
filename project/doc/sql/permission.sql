@@ -63,10 +63,10 @@ CREATE TABLE `sys_acl_module`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Table structure for sys_dept
+-- Table structure for sys_org
 -- ----------------------------
-DROP TABLE IF EXISTS `sys_dept`;
-CREATE TABLE `sys_dept`  (
+DROP TABLE IF EXISTS `sys_org`;
+CREATE TABLE `sys_org`  (
   `id` bigint(22) NOT NULL AUTO_INCREMENT COMMENT '自增主键',
   `surrogate_id` bigint(22) NOT NULL COMMENT '唯一主键',
   `number` varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '部门编号',
