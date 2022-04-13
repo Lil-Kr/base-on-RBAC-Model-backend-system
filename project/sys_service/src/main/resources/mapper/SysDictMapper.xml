@@ -7,7 +7,6 @@
         <id column="id" property="id" />
         <result column="surrogate_id" property="surrogateId" />
         <result column="name" property="name" />
-        <result column="type" property="type" />
         <result column="remark" property="remark" />
         <result column="deleted" property="deleted" />
         <result column="operator" property="operator" />
