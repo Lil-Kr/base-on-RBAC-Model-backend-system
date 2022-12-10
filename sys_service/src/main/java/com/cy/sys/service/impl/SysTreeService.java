@@ -3,18 +3,18 @@ package com.cy.sys.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.cy.sys.dao.SysAclMapper;
 import com.cy.sys.dao.SysAclModuleMapper;
-import com.cy.sys.dao.SysDeptMapper;
+import com.cy.sys.dao.SysOrgMapper;
 import com.cy.sys.pojo.dto.acl.AclDto;
 import com.cy.sys.pojo.dto.aclmodule.AclModuleDto;
-import com.cy.sys.pojo.dto.dept.DeptLevelDto;
+import com.cy.sys.pojo.dto.org.OrgLevelDto;
 import com.cy.sys.pojo.entity.SysAcl;
 import com.cy.sys.pojo.entity.SysAclModule;
-import com.cy.sys.pojo.entity.SysDept;
+import com.cy.sys.pojo.entity.SysOrg;
 import com.cy.sys.service.ISysCoreService;
 import com.cy.sys.util.acl.AclUtil;
 import com.cy.sys.util.aclmodule.AclModuleUtil;
-import com.cy.sys.util.dept.DeptUtil;
-import com.cy.sys.util.dept.LevelUtil;
+import com.cy.sys.util.org.OrgUtil;
+import com.cy.sys.util.org.LevelUtil;
 import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
 public class SysTreeService {
 
     @Resource
-    private SysDeptMapper sysDeptMapper1;
+    private SysOrgMapper sysOrgMapper1;
 
     @Resource
     private SysAclModuleMapper sysAclModuleMapper1;
@@ -41,74 +41,74 @@ public class SysTreeService {
     private ISysCoreService sysCoreService1;
 
     /**
-     * 获取部门树
+     * 获取组织树
      * @return
      */
-    public List<DeptLevelDto> deptTree() {
-        // 查询所有部门信息
-        List<SysDept> deptList = sysDeptMapper1.selectList(new QueryWrapper());
+    public List<OrgLevelDto> orgTree() {
+        // 查询所有组织信息
+        List<SysOrg> orgList = sysOrgMapper1.selectList(new QueryWrapper());
 
         // 实体集合转为Dto集合
-        List<DeptLevelDto> dtoList = deptList.stream().map(dept -> DeptLevelDto.adapt(dept)).collect(Collectors.toList());
-        return deptListToTree(dtoList);
+        List<OrgLevelDto> dtoList = orgList.stream().map(org -> OrgLevelDto.adapt(org)).collect(Collectors.toList());
+        return orgListToTree(dtoList);
     }
 
     /**
      * 递归组装tree
-     * @param dtoList 数据库中的所有部门信息
+     * @param dtoList 数据库中的所有组织信息
      * @return
      */
-    public List<DeptLevelDto> deptListToTree(List<DeptLevelDto> dtoList) {
+    public List<OrgLevelDto> orgListToTree(List<OrgLevelDto> dtoList) {
 
         if (CollectionUtils.isEmpty(dtoList)) {
             return new ArrayList<>();
         }
 
-        // 获取一级部门 rootList
-        List<DeptLevelDto> rootList = dtoList.stream()
-                .filter(deptLevelDto -> LevelUtil.ROOT.equals(deptLevelDto.getLevel()))// 过滤出顶层部门信息
-                .sorted(Comparator.comparing(DeptLevelDto::getSeq)) // 按照seq字段升序排序
+        // 获取一级组织 rootList
+        List<OrgLevelDto> rootList = dtoList.stream()
+                .filter(orgLevelDto -> LevelUtil.ROOT.equals(orgLevelDto.getLevel()))// 过滤出顶层组织信息
+                .sorted(Comparator.comparing(OrgLevelDto::getSeq)) // 按照seq字段升序排序
                 .collect(Collectors.toList());
 
         // 按照level分组
-        Map<String, List<DeptLevelDto>> levelDeptMap = dtoList.stream()
-                .sorted(Comparator.comparing(SysDept::getSeq)) // 按照seq字段升序排序
-                .collect(Collectors.groupingBy(dept -> dept.getLevel()));
+        Map<String, List<OrgLevelDto>> levelOrgMap = dtoList.stream()
+                .sorted(Comparator.comparing(SysOrg::getSeq)) // 按照seq字段升序排序
+                .collect(Collectors.groupingBy(org -> org.getLevel()));
 
-        // 从顶层开始递归生成部门树
-        transformDeptTree(rootList,LevelUtil.ROOT,levelDeptMap);
+        // 从顶层开始递归生成组织树
+        transformOrgTree(rootList,LevelUtil.ROOT,levelOrgMap);
         return rootList;
     }
 
     /**
-     * 将部门树转为树结构
+     * 将组织树转为树结构
      * @param levelDtoList
      * @param level
-     * @param levelDeptMap
+     * @param levelOrgMap
      */
-    public void transformDeptTree(List<DeptLevelDto> levelDtoList,String level,Map<String, List<DeptLevelDto>> levelDeptMap) {
+    public void transformOrgTree(List<OrgLevelDto> levelDtoList, String level, Map<String, List<OrgLevelDto>> levelOrgMap) {
 
-        levelDtoList.forEach(deptLevelDto -> {
+        levelDtoList.forEach(orgLevelDto -> {
             /**
              * 处理当前层级数据
              * **/
             // 计算出下一级的level
-            String nextLevel = LevelUtil.calculateLevel(level, deptLevelDto.getId());// 0.1
+            String nextLevel = LevelUtil.calculateLevel(level, orgLevelDto.getId());// 0.1
 
-            // 获得下一级的所有部门信息
-            List<DeptLevelDto> dtoNextTempList = levelDeptMap.get(nextLevel);// 大可 中台
+            // 获得下一级的所有组织信息
+            List<OrgLevelDto> dtoNextTempList = levelOrgMap.get(nextLevel);// 大可 中台
 
             if (CollectionUtils.isEmpty(dtoNextTempList)) {// 没有下一级了
                 return;
             }
 
             // 排序
-            Collections.sort(dtoNextTempList, DeptUtil.deptLevelDtoComparator);
-            // 设置下一层部门
-            deptLevelDto.setDeptList(dtoNextTempList);
+            Collections.sort(dtoNextTempList, OrgUtil.orgLevelDtoComparator);
+            // 设置下一层组织
+            orgLevelDto.setOrgList(dtoNextTempList);
 
             // 进入下一层进行递归处理
-            transformDeptTree(dtoNextTempList,nextLevel,levelDeptMap);
+            transformOrgTree(dtoNextTempList,nextLevel,levelOrgMap);
         });
     }
 
@@ -134,9 +134,9 @@ public class SysTreeService {
             return new ArrayList<>();
         }
 
-        // 获取一级部门 rootList
+        // 获取一级组织 rootList
         List<AclModuleDto> rootList = dtoList.stream()
-                .filter(dto -> LevelUtil.ROOT.equals(dto.getLevel()))// 过滤出顶层部门信息
+                .filter(dto -> LevelUtil.ROOT.equals(dto.getLevel()))// 过滤出顶层组织信息
                 .sorted(Comparator.comparing(AclModuleDto::getSeq)) // 按照seq字段升序排序
                 .collect(Collectors.toList());
 
@@ -159,7 +159,7 @@ public class SysTreeService {
             // 计算出下一级的level
             String nextLevel = LevelUtil.calculateLevel(level, aclModuleDto.getId());// 0.1
 
-            // 获得下一级的所有部门信息
+            // 获得下一级的所有组织信息
             List<AclModuleDto> dtoNextTempList = levelAclModuleMap.get(nextLevel);//
 
             if (CollectionUtils.isEmpty(dtoNextTempList)) {// 没有下一级了
@@ -169,7 +169,7 @@ public class SysTreeService {
             // 排序
             Collections.sort(dtoNextTempList, AclModuleUtil.aclModuleLevelDtoComparator);
 
-            // 设置下一层部门
+            // 设置下一层组织
             aclModuleDto.setAclModuleDtoList(dtoNextTempList);
 
             // 进入下一层进行递归处理

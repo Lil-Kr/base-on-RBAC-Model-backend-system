@@ -50,10 +50,10 @@ public class UserSaveParam {
     private String mail;
 
     /**
-     * 用户所在部门id
+     * 用户所在组织id
      */
-    @NotNull(groups = {Default.class},message = "用户所在部门不能为空")
-    private Long deptId;
+    @NotNull(groups = {Default.class},message = "用户所在组织不能为空")
+    private Long orgId;
 
     /**
      * 状态, 0正常, 1冻结

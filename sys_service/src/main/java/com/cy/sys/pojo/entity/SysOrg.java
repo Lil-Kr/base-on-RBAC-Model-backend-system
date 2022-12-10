@@ -3,8 +3,7 @@ package com.cy.sys.pojo.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 import java.io.Serializable;
 
@@ -14,11 +13,15 @@ import java.io.Serializable;
  * </p>
  *
  * @author CY
- * @since 2020-11-26
+ * @since 2020-11-24
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class SysLog extends Model<SysLog> {
+@Builder
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
+public class SysOrg extends Model<SysOrg> {
 
     private static final long serialVersionUID = 1L;
 
@@ -29,34 +32,34 @@ public class SysLog extends Model<SysLog> {
     private Long id;
 
     /**
-     * 日志id,唯一主键
+     * 唯一主键
      */
     private Long surrogateId;
 
     /**
-     * 1组织，2用户，3权限模块, 4权限， 5角色, 6角色用户关系, 7角色权限关系
+     * 组织编号
      */
-    private Integer type;
+    private String number;
 
     /**
-     * 各个模块的主键id, 涉及到关联关系的操作存放的是角色id
+     * 组织名称
      */
-    private Long targetId;
+    private String name;
 
     /**
-     * 更新前的值
+     * 父id
      */
-    private String oldValue;
+    private Long parentId;
 
     /**
-     * 更新后的值
+     * 组织层级, 0. / 0.1, 0.2
      */
-    private String newValue;
+    private String level;
 
     /**
-     * 状态, 当前是否复原过, 0没有, 1复原过
+     * 排序, 组织咋当前层级目录下的顺序
      */
-    private Integer status;
+    private Integer seq;
 
     /**
      * 备注

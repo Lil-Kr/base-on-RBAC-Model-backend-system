@@ -60,7 +60,7 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
       registry.addMapping("/**")
-          .allowedOrigins("*")
+          .allowedOriginPatterns("*")
           .allowCredentials(true)
           .allowedMethods("GET", "POST", "DELETE", "PUT")
           .maxAge(3600);
