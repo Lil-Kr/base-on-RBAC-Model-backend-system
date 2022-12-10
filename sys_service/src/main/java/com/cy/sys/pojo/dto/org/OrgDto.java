@@ -17,13 +17,15 @@ public class OrgDto extends SysOrg {
      * @param param
      * @return
      */
-    public static SysOrg paramToSysorg(OrgParam param) {
+
+    public static SysOrg paramToSysOrg(OrgParam param) {
         SysOrg org = SysOrg.builder().build();
         BeanUtils.copyProperties(param,org);
         return org;
     }
 
-    public static SysOrg paramToSysorg(SysOrg param) {
+
+    public static SysOrg paramToSysOrg(SysOrg param) {
         SysOrg org = SysOrg.builder().build();
         BeanUtils.copyProperties(param,org);
         return org;

@@ -8,7 +8,7 @@ import java.util.Comparator;
 public class AclModuleUtil {
 
     /**
-     * 以SysAclModule排序, 部门列表根据seq排序
+     * 以SysAclModule排序, 组织列表根据seq排序
      */
     public static Comparator<AclModuleDto> aclModuleLevelDtoComparator = new Comparator<AclModuleDto>() {
         @Override

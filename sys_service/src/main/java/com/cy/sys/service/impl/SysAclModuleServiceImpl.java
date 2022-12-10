@@ -109,7 +109,7 @@ public class SysAclModuleServiceImpl extends ServiceImpl<SysAclModuleMapper, Sys
                 .operateIp("127.0.0.1")
                 .build();
 
-        // 更新子部门信息
+        // 更新子组织信息
         this.updateWithChildAclModule(before,after);
         return ApiResp.success("更新权限模块成功");
     }
@@ -138,16 +138,16 @@ public class SysAclModuleServiceImpl extends ServiceImpl<SysAclModuleMapper, Sys
         // 更新当前权限模块的子权限模块
         String newLevelPrefix = after.getLevel();// 0.1.3
         String oldLevelPrefix = before.getLevel();// 0.1
-        if (!newLevelPrefix.equals(oldLevelPrefix)) {// 不一致需要做子部门的更新
+        if (!newLevelPrefix.equals(oldLevelPrefix)) {// 不一致需要做子组织的更新
             this.updateChildAclModuleTree(after);
         }
     }
 
     /**
-     * 递归变更部门树层级, 并维护子部门的level
+     * 递归变更组织树层级, 并维护子组织的level
      */
     protected void updateChildAclModuleTree(SysAclModule afterAclModule) {
-        // 查询当前部门的子部门
+        // 查询当前组织的子组织
         List<SysAclModule> aclModuleList = sysAclModuleMapper1.selectChildAclModuleListByParentId(afterAclModule.getSurrogateId());
 
         if (CollectionUtils.isEmpty(aclModuleList)) {

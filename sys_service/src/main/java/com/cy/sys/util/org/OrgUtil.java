@@ -8,7 +8,8 @@ import java.util.Comparator;
 public class OrgUtil {
 
     /**
-     * 以orgLevelDto排序, 部门列表根据seq排序
+
+     * 以OrgLevelDto排序, 组织列表根据seq排序
      */
     public static Comparator<OrgLevelDto> orgLevelDtoComparator = new Comparator<OrgLevelDto>() {
         @Override
@@ -18,7 +19,7 @@ public class OrgUtil {
     };
 
     /**
-     * 以Sysorg排序
+     * 以SysOrg排序
      */
     public static Comparator<SysOrg> orgComparator = new Comparator<SysOrg>() {
         @Override
@@ -28,7 +29,7 @@ public class OrgUtil {
     };
 
     /**
-     * 以Sysorg排序
+     * 以SysOrg排序
      */
     public static Comparator<SysOrg> orgByIdComparator = new Comparator<SysOrg>() {
         @Override

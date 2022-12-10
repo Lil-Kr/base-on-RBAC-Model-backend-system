@@ -22,7 +22,7 @@ public interface ISysOrgService extends IService<SysOrg> {
 
     ApiResp edit(OrgParam param) throws Exception;
 
-    ApiResp getChildrenorgList(OrgGetChildrenParam dto) throws Exception;
+    ApiResp getChildrenOrgList(OrgGetChildrenParam dto) throws Exception;
 
     ApiResp orgTree() throws Exception;
 

@@ -16,8 +16,8 @@ public class OrgDeleteParam {
     private Long id;
 
     /**
-     * 部门唯一主键
+     * 组织唯一主键
      */
-    @NotNull(message = "部门surrogateId不能为空")
+    @NotNull(message = "组织surrogateId不能为空")
     private Long surrogateId;
 }

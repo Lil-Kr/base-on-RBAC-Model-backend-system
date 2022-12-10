@@ -104,9 +104,9 @@ public class SysOrgController {
      * @return
      * @throws Exception
      */
-    @PostMapping("getChildrenorgList")
-    public ApiResp getChildrenorgList(@RequestBody @Valid OrgGetChildrenParam param) throws Exception {
-        return sysorgService1.getChildrenorgList(param);
+    @PostMapping("getChildrenOrgList")
+    public ApiResp getChildrenOrgList(@RequestBody @Valid OrgGetChildrenParam param) throws Exception {
+        return sysorgService1.getChildrenOrgList(param);
     }
 
     /**

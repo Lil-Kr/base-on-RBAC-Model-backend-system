@@ -69,7 +69,7 @@ public class SysUser extends Model<SysUser> {
     private String password;
 
     /**
-     * 用户所在部门id
+     * 用户所在组织id
      */
     private Long orgId;
 

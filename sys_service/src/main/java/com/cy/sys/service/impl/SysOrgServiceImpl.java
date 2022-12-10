@@ -134,7 +134,7 @@ public class SysOrgServiceImpl extends ServiceImpl<SysOrgMapper, SysOrg> impleme
      * 递归变更部门树层级, 并维护子部门的level
      */
     protected void updateChildorgTree(SysOrg afterorg) {
-        List<SysOrg> orgList = sysOrgMapper1.selectChildorgListByParentId(afterorg.getSurrogateId());
+        List<SysOrg> orgList = sysOrgMapper1.selectChildOrgListByParentId(afterorg.getSurrogateId());
         if (CollectionUtils.isEmpty(orgList)) {
             return;
         }
@@ -154,7 +154,7 @@ public class SysOrgServiceImpl extends ServiceImpl<SysOrgMapper, SysOrg> impleme
      * @return
      */
     @Override
-    public ApiResp getChildrenorgList(OrgGetChildrenParam dto) throws Exception {
+    public ApiResp getChildrenOrgList(OrgGetChildrenParam dto) throws Exception {
         // 当前部门
         QueryWrapper<SysOrg> query1 = new QueryWrapper<>();
         query1.eq("surrogate_id",dto.getSurrogateId());

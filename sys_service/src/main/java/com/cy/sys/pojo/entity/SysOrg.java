@@ -37,12 +37,12 @@ public class SysOrg extends Model<SysOrg> {
     private Long surrogateId;
 
     /**
-     * 部门编号
+     * 组织编号
      */
     private String number;
 
     /**
-     * 部门名称
+     * 组织名称
      */
     private String name;
 
@@ -52,12 +52,12 @@ public class SysOrg extends Model<SysOrg> {
     private Long parentId;
 
     /**
-     * 部门层级, 0. / 0.1, 0.2
+     * 组织层级, 0. / 0.1, 0.2
      */
     private String level;
 
     /**
-     * 排序, 部门咋当前层级目录下的顺序
+     * 排序, 组织咋当前层级目录下的顺序
      */
     private Integer seq;
 

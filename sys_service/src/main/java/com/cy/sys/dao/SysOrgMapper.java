@@ -18,7 +18,8 @@ import java.util.List;
 @Mapper
 public interface SysOrgMapper extends BaseMapper<SysOrg> {
 
-    List<SysOrg> selectChildorgList(@Param("level") String oldLevelPrefix);
 
-    List<SysOrg> selectChildorgListByParentId(@Param("parentId") Long parentId);
+    List<SysOrg> selectChildOrgList(@Param("level") String oldLevelPrefix);
+
+    List<SysOrg> selectChildOrgListByParentId(@Param("parentId") Long parentId);
 }

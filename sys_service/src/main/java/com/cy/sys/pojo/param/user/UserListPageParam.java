@@ -37,7 +37,7 @@ public class UserListPageParam {
     private String mail;
 
     /**
-     * 用户所在部门id
+     * 用户所在组织id
      */
     private Long orgId;
 

@@ -23,10 +23,10 @@ public class OrgListAllParam {
     @NotNull(groups = {GroupPage.class},message = "每页记录数不能为空")
     private Long size;
 
-    // 部门编号
+    // 组织编号
     private String number;
 
-    // 部门名
+    // 组织名
     private String name;
 
 }
